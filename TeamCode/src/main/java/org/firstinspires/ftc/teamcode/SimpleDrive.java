@@ -33,6 +33,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -51,12 +53,16 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Simple Drive", group="Training")
-@Disabled
+//@Disabled
 public class SimpleDrive extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
+    private DcMotor motorFL = null;
+    private DcMotor motorFR = null;
+    private DcMotor motorBL = null;
+    private DcMotor motorBR = null;
+    private Servo grabby = null;
 
     @Override
     public void runOpMode() {
@@ -66,11 +72,25 @@ public class SimpleDrive extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        motorFL  = hardwareMap.get(DcMotor.class, "motorFL");
+        motorFR  = hardwareMap.get(DcMotor.class, "motorFR");
+        motorBL  = hardwareMap.get(DcMotor.class, "motorBL");
+        motorBR  = hardwareMap.get(DcMotor.class, "motorBR");
+        grabby  = hardwareMap.get(Servo.class, "grabby");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        motorFL.setDirection(DcMotor.Direction.REVERSE);
+        motorFR.setDirection(DcMotor.Direction.FORWARD);
+        motorBL.setDirection(DcMotor.Direction.REVERSE);
+        motorBR.setDirection(DcMotor.Direction.FORWARD);
+        grabby.setDirection(Servo.Direction.FORWARD);
+
+        motorFL.setPower(0);
+        motorFR.setPower(0);
+        motorBL.setPower(0);
+        motorBR.setPower(0);
+        grabby.setPosition(0);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -80,16 +100,32 @@ public class SimpleDrive extends LinearOpMode {
         while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower;
-
-            leftPower = -gamepad1.left_stick_y;
 
             // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
+            double grabPosition = 0;
+            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+            double robotAngle = Math.atan2(-gamepad1.left_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
+            //Set minimum throttle value so the trigger does not need to be pressed to drive
+            double throttle = 1 - gamepad1.right_trigger * (1-0.3);
+            //double trottle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
+            //Cube the value of turnstick so there's more control over low turn speeds
+            double rightX = Math.pow(gamepad1.right_stick_x, 3);
+            final double v1 = r * Math.cos(robotAngle) + rightX;
+            final double v2 = r * Math.sin(robotAngle) - rightX;
+            final double v3 = r * Math.sin(robotAngle) + rightX;
+            final double v4 = r * Math.cos(robotAngle) - rightX;
+
+            grabPosition = gamepad1.right_trigger;
+            grabby.setPosition(grabPosition);
+            motorFL.setPower(v1*throttle);
+            motorFR.setPower(v2*throttle);
+            motorBL.setPower(v3*throttle);
+            motorBR.setPower(v4*throttle);
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower);
+            telemetry.addData("Grabber: ", grabPosition);
             telemetry.update();
         }
     }
