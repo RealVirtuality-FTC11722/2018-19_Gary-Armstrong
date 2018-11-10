@@ -62,7 +62,11 @@ public class SimpleDrive extends LinearOpMode {
     private DcMotor motorFR = null;
     private DcMotor motorBL = null;
     private DcMotor motorBR = null;
-    private Servo grabby = null;
+    private DcMotor motorArmSwivel = null;
+    private DcMotor motorArmLift = null;
+    private DcMotor motorArmElbow = null;
+    private DcMotor motorArmGrabber = null;
+    //private Servo grabby = null;
 
     @Override
     public void runOpMode() {
@@ -76,7 +80,11 @@ public class SimpleDrive extends LinearOpMode {
         motorFR  = hardwareMap.get(DcMotor.class, "motorFR");
         motorBL  = hardwareMap.get(DcMotor.class, "motorBL");
         motorBR  = hardwareMap.get(DcMotor.class, "motorBR");
-        grabby  = hardwareMap.get(Servo.class, "grabby");
+        motorArmSwivel = hardwareMap.get(DcMotor.class, "motorArmSwivel");
+        motorArmLift = hardwareMap.get(DcMotor.class, "motorArmLift");
+        motorArmElbow = hardwareMap.get(DcMotor.class, "motorArmElbow");
+        motorArmGrabber = hardwareMap.get(DcMotor.class, "motorArmGrabber");
+        //grabby  = hardwareMap.get(Servo.class, "grabby");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -84,13 +92,21 @@ public class SimpleDrive extends LinearOpMode {
         motorFR.setDirection(DcMotor.Direction.FORWARD);
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorBR.setDirection(DcMotor.Direction.FORWARD);
-        grabby.setDirection(Servo.Direction.FORWARD);
+        motorArmSwivel.setDirection(DcMotor.Direction.FORWARD);
+        motorArmLift.setDirection(DcMotor.Direction.FORWARD);
+        motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
+        motorArmGrabber.setDirection(DcMotor.Direction.FORWARD);
+        //grabby.setDirection(Servo.Direction.FORWARD);
 
         motorFL.setPower(0);
         motorFR.setPower(0);
         motorBL.setPower(0);
         motorBR.setPower(0);
-        grabby.setPosition(0);
+        motorArmSwivel.setPower(0);
+        motorArmLift.setPower(0);
+        motorArmElbow.setPower(0);
+        motorArmGrabber.setPower(0);
+        //grabby.setPosition(0);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -101,10 +117,11 @@ public class SimpleDrive extends LinearOpMode {
 
             // Setup a variable for each drive wheel to save power level for telemetry
 
+
             // Send calculated power to wheels
             double grabPosition = 0;
             double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(-gamepad1.left_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
+            double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
             //Set minimum throttle value so the trigger does not need to be pressed to drive
             double throttle = 1 - gamepad1.right_trigger * (1-0.3);
             //double trottle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
@@ -115,17 +132,29 @@ public class SimpleDrive extends LinearOpMode {
             final double v3 = r * Math.sin(robotAngle) + rightX;
             final double v4 = r * Math.cos(robotAngle) - rightX;
 
-            grabPosition = gamepad1.right_trigger;
-            grabby.setPosition(grabPosition);
+
+            //grabPosition = gamepad1.right_trigger;
+            //grabby.setPosition(grabPosition);
             motorFL.setPower(v1*throttle);
             motorFR.setPower(v2*throttle);
             motorBL.setPower(v3*throttle);
             motorBR.setPower(v4*throttle);
 
+            if (gamepad1.dpad_left){
+                motorArmSwivel.setPower(-0.2);
+            }
+            else if (gamepad1.dpad_right) {
+                 motorArmSwivel.setPower(0.2);
+            }
+            else{
+                 motorArmSwivel.setPower(0);
+            }
+
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Grabber: ", grabPosition);
+            //telemetry.addData("Grabber: ", grabPosition);
             telemetry.update();
         }
     }
