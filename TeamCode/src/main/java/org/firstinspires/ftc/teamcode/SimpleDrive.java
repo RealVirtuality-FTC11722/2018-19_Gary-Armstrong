@@ -65,7 +65,13 @@ public class SimpleDrive extends LinearOpMode {
     private DcMotor motorArmSwivel = null;
     private DcMotor motorArmLift = null;
     private DcMotor motorArmElbow = null;
-    private DcMotor motorArmGrabber = null;
+    private Servo servoArmWrist = null;
+    private Servo servoArmSpinner = null;
+    private double START_POSITION = 0;
+    private double SWIVEL_POWER = 0.2;
+    private double MAX_LIFT_POWER = 0.4;
+    private double MAX_ELBOW_POWER = 0.4;
+    private double MIN_THROTTLE = 0.3;
     //private Servo grabby = null;
 
     @Override
@@ -83,7 +89,8 @@ public class SimpleDrive extends LinearOpMode {
         motorArmSwivel = hardwareMap.get(DcMotor.class, "motorArmSwivel");
         motorArmLift = hardwareMap.get(DcMotor.class, "motorArmLift");
         motorArmElbow = hardwareMap.get(DcMotor.class, "motorArmElbow");
-        motorArmGrabber = hardwareMap.get(DcMotor.class, "motorArmGrabber");
+        servoArmWrist = hardwareMap.get(Servo.class, "servoArmWrist");
+        servoArmSpinner = hardwareMap.get (Servo.class, "servoArmSpinner");
         //grabby  = hardwareMap.get(Servo.class, "grabby");
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -95,7 +102,8 @@ public class SimpleDrive extends LinearOpMode {
         motorArmSwivel.setDirection(DcMotor.Direction.FORWARD);
         motorArmLift.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
-        motorArmGrabber.setDirection(DcMotor.Direction.FORWARD);
+        servoArmSpinner.setDirection(Servo.Direction.FORWARD);
+        servoArmWrist.setDirection(Servo.Direction.FORWARD);
         //grabby.setDirection(Servo.Direction.FORWARD);
 
         motorFL.setPower(0);
@@ -105,7 +113,8 @@ public class SimpleDrive extends LinearOpMode {
         motorArmSwivel.setPower(0);
         motorArmLift.setPower(0);
         motorArmElbow.setPower(0);
-        motorArmGrabber.setPower(0);
+        servoArmWrist.setPosition(START_POSITION);
+        servoArmSpinner.setPosition(0);
         //grabby.setPosition(0);
 
         // Wait for the game to start (driver presses PLAY)
@@ -123,7 +132,7 @@ public class SimpleDrive extends LinearOpMode {
             double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
             //Set minimum throttle value so the trigger does not need to be pressed to drive
-            double throttle = 1 - gamepad1.right_trigger * (1-0.3);
+            double throttle = 1 - gamepad1.right_trigger * (1-MIN_THROTTLE);
             //double trottle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
             //Cube the value of turnstick so there's more control over low turn speeds
             double rightX = Math.pow(gamepad1.right_stick_x, 3);
@@ -140,16 +149,22 @@ public class SimpleDrive extends LinearOpMode {
             motorBL.setPower(v3*throttle);
             motorBR.setPower(v4*throttle);
 
-            if (gamepad1.dpad_left){
-                motorArmSwivel.setPower(-0.2);
+            if (gamepad2.dpad_left){
+                motorArmSwivel.setPower(-SWIVEL_POWER);
             }
-            else if (gamepad1.dpad_right) {
-                 motorArmSwivel.setPower(0.2);
+            else if (gamepad2.dpad_right) {
+                 motorArmSwivel.setPower(SWIVEL_POWER);
             }
             else{
                  motorArmSwivel.setPower(0);
             }
 
+            motorArmLift.setPower(gamepad2.right_stick_y * MAX_LIFT_POWER);
+
+            motorArmElbow.setPower(gamepad2.right_trigger * MAX_ELBOW_POWER);
+            motorArmElbow.setPower(- gamepad2.left_trigger * MAX_ELBOW_POWER);
+
+            servoArmWrist.setPosition(gamepad2.left_stick_y);
 
 
             // Show the elapsed game time and wheel power.
