@@ -29,34 +29,41 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
+ * This file illustrates the concept of driving a path based on time.
+ * It uses the common Pushbot hardware class to define the drive on the robot.
+ * The code is structured as a LinearOpMode
  *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
+ * The code assumes that you do NOT have encoders on the wheels,
+ *   otherwise you would use: PushbotAutoDriveByEncoder;
+ *
+ *   The desired path in this example is:
+ *   - Drive forward for 3 seconds
+ *   - Spin right for 1.3 seconds
+ *   - Drive Backwards for 1 Second
+ *   - Stop and close the claw.
+ *
+ *  The code is written in a simple form with no optimizations.
+ *  However, there are several ways that this type of sequence could be streamlined,
  *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Simple Drive", group="Training")
+@Autonomous(name="Autonomous Test", group="Test")
 //@Disabled
-public class SimpleDrive extends LinearOpMode {
+public class SimpleAuto extends LinearOpMode {
 
-    // Declare OpMode members.
+    /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorFL = null;
     private DcMotor motorFR = null;
@@ -74,7 +81,6 @@ public class SimpleDrive extends LinearOpMode {
     private double MIN_THROTTLE = 0.3;
     private double SPIN_FORWARD = 0.7;
     private double SPIN_BACKWARD = 0.3;
-    //private Servo grabby = null;
 
     @Override
     public void runOpMode() {
@@ -117,73 +123,24 @@ public class SimpleDrive extends LinearOpMode {
         motorArmElbow.setPower(0);
         servoArmWrist.setPosition(START_POSITION);
         servoArmSpinner.setPosition(0.5);
-        //grabby.setPosition(0);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
+        // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
+
         runtime.reset();
-
-        // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
-            // Setup a variable for each drive wheel to save power level for telemetry
-
-
-            // Send calculated power to wheels
-            double grabPosition = 0;
-            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-            //Set minimum throttle value so the trigger does not need to be pressed to drive
-            double throttle = 1 - gamepad1.right_trigger * (1-MIN_THROTTLE);
-            //double trottle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
-            //Cube the value of turnstick so there's more control over low turn speeds
-            double rightX = Math.pow(gamepad1.right_stick_x, 3);
-            final double v1 = r * Math.cos(robotAngle) + rightX;
-            final double v2 = r * Math.sin(robotAngle) - rightX;
-            final double v3 = r * Math.sin(robotAngle) + rightX;
-            final double v4 = r * Math.cos(robotAngle) - rightX;
-
-
-            //grabPosition = gamepad1.right_trigger;
-            //grabby.setPosition(grabPosition);
-            motorFL.setPower(v1*throttle);
-            motorFR.setPower(v2*throttle);
-            motorBL.setPower(v3*throttle);
-            motorBR.setPower(v4*throttle);
-
-            if (gamepad2.dpad_left){
-                motorArmSwivel.setPower(-SWIVEL_POWER);
-            }
-            else if (gamepad2.dpad_right) {
-                 motorArmSwivel.setPower(SWIVEL_POWER);
-            }
-            else{
-                 motorArmSwivel.setPower(0);
-            }
-
-            motorArmLift.setPower(gamepad2.right_stick_y * MAX_LIFT_POWER);
-
-            motorArmElbow.setPower(gamepad2.right_trigger * MAX_ELBOW_POWER);
-            motorArmElbow.setPower(- gamepad2.left_trigger * MAX_ELBOW_POWER);
-
-            servoArmWrist.setPosition(gamepad2.left_stick_y);
-
-            if (gamepad2.a) {
-                servoArmSpinner.setPosition(SPIN_FORWARD);
-            }
-
-            if (gamepad2.b) {
-                servoArmSpinner.setPosition(0.5);
-            }
-
-            if (gamepad2.y) {
-                servoArmSpinner.setPosition(SPIN_BACKWARD);
-            }
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Grabber: ", grabPosition);
+            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
-        }
+
+            DropFromLander();
+            LocateSelf();
+            DriveToGold();
+            LocateSelf();
+            DriveToCorner();
+            PlaceMarker();
+            LocateSelf();
+            DriveToCrater();
     }
 }
