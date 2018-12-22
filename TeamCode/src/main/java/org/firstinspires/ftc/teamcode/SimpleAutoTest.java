@@ -61,7 +61,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 @Autonomous(name="Autonomous Test", group="Test")
 //@Disabled
-public class SimpleAuto extends LinearOpMode {
+public class SimpleAutoTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();

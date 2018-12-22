@@ -29,14 +29,12 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -52,9 +50,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Simple Drive", group="Training")
+@TeleOp(name="Simple Wheel Test", group="Training")
 //@Disabled
-public class SimpleDrive extends LinearOpMode {
+public class SimpleWheelTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -65,15 +63,19 @@ public class SimpleDrive extends LinearOpMode {
     private DcMotor motorArmSwivel = null;
     private DcMotor motorArmLift = null;
     private DcMotor motorArmElbow = null;
-    private Servo servoArmWrist = null;
-    private Servo servoArmSpinner = null;
-    private double START_POSITION = 0;
+    private CRServo servoArmWrist = null;
+    private CRServo servoArmSpinner = null;
+    private Servo servoHookLander = null;
+    private DcMotor motorLanderLatch = null;
+    private double START_POSITION = 0.5;
     private double SWIVEL_POWER = 0.2;
-    private double MAX_LIFT_POWER = 0.4;
+    private double MAX_LIFT_POWER = 0.2;
     private double MAX_ELBOW_POWER = 0.4;
     private double MIN_THROTTLE = 0.3;
     private double SPIN_FORWARD = 0.7;
     private double SPIN_BACKWARD = 0.3;
+    private double LATCHED = 0.4;
+    private double UNLATCHED = 0.0;
     //private Servo grabby = null;
 
     @Override
@@ -91,8 +93,10 @@ public class SimpleDrive extends LinearOpMode {
         motorArmSwivel = hardwareMap.get(DcMotor.class, "motorArmSwivel");
         motorArmLift = hardwareMap.get(DcMotor.class, "motorArmLift");
         motorArmElbow = hardwareMap.get(DcMotor.class, "motorArmElbow");
-        servoArmWrist = hardwareMap.get(Servo.class, "servoArmWrist");
-        servoArmSpinner = hardwareMap.get (Servo.class, "servoArmSpinner");
+        servoArmWrist = hardwareMap.get(CRServo.class, "servoArmWrist");
+        servoArmSpinner = hardwareMap.get (CRServo.class, "servoArmSpinner");
+        servoHookLander = hardwareMap.get (Servo.class, "servoHookLander");
+        motorLanderLatch = hardwareMap.get (DcMotor.class, "motorLanderLatch");
         //grabby  = hardwareMap.get(Servo.class, "grabby");
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -104,8 +108,10 @@ public class SimpleDrive extends LinearOpMode {
         motorArmSwivel.setDirection(DcMotor.Direction.FORWARD);
         motorArmLift.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
-        servoArmSpinner.setDirection(Servo.Direction.FORWARD);
-        servoArmWrist.setDirection(Servo.Direction.FORWARD);
+        servoArmSpinner.setDirection(CRServo.Direction.FORWARD);
+        servoArmWrist.setDirection(CRServo.Direction.FORWARD);
+        servoHookLander.setDirection(Servo.Direction.REVERSE);
+        motorLanderLatch.setDirection(DcMotor.Direction.FORWARD);
         //grabby.setDirection(Servo.Direction.FORWARD);
 
         motorFL.setPower(0);
@@ -115,8 +121,12 @@ public class SimpleDrive extends LinearOpMode {
         motorArmSwivel.setPower(0);
         motorArmLift.setPower(0);
         motorArmElbow.setPower(0);
-        servoArmWrist.setPosition(START_POSITION);
-        servoArmSpinner.setPosition(0.5);
+        servoArmWrist.setPower(START_POSITION);
+        servoArmSpinner.setPower(0.5);
+        servoHookLander.setPosition(0.5);
+        motorLanderLatch.setPower(0);
+        DcMotor testMotor = motorFR;
+        String motorName = "FR";
         //grabby.setPosition(0);
 
         // Wait for the game to start (driver presses PLAY)
@@ -125,64 +135,26 @@ public class SimpleDrive extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
-            // Setup a variable for each drive wheel to save power level for telemetry
-
-
-            // Send calculated power to wheels
-            double grabPosition = 0;
-            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-            //Set minimum throttle value so the trigger does not need to be pressed to drive
-            double throttle = 1 - gamepad1.right_trigger * (1-MIN_THROTTLE);
-            //double trottle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
-            //Cube the value of turnstick so there's more control over low turn speeds
-            double rightX = Math.pow(gamepad1.right_stick_x, 3);
-            final double v1 = r * Math.cos(robotAngle) + rightX;
-            final double v2 = r * Math.sin(robotAngle) - rightX;
-            final double v3 = r * Math.sin(robotAngle) + rightX;
-            final double v4 = r * Math.cos(robotAngle) - rightX;
-
-
-            //grabPosition = gamepad1.right_trigger;
-            //grabby.setPosition(grabPosition);
-            motorFL.setPower(v1*throttle);
-            motorFR.setPower(v2*throttle);
-            motorBL.setPower(v3*throttle);
-            motorBR.setPower(v4*throttle);
-
-            if (gamepad2.dpad_left){
-                motorArmSwivel.setPower(-SWIVEL_POWER);
+            if (gamepad1.a) {
+                testMotor = motorBL;
+                motorName = "BL";
             }
-            else if (gamepad2.dpad_right) {
-                 motorArmSwivel.setPower(SWIVEL_POWER);
+            if (gamepad1.b) {
+                testMotor = motorBR;
+                motorName = "BR";
             }
-            else{
-                 motorArmSwivel.setPower(0);
+            if (gamepad1.x) {
+                testMotor = motorFL;
+                motorName = "FL";
             }
-
-            motorArmLift.setPower(gamepad2.right_stick_y * MAX_LIFT_POWER);
-
-            motorArmElbow.setPower(gamepad2.right_trigger * MAX_ELBOW_POWER);
-            motorArmElbow.setPower(- gamepad2.left_trigger * MAX_ELBOW_POWER);
-
-            servoArmWrist.setPosition(gamepad2.left_stick_y);
-
-            if (gamepad2.a) {
-                servoArmSpinner.setPosition(SPIN_FORWARD);
+            if (gamepad1.y) {
+                testMotor = motorFR;
+                motorName = "FR";
             }
+            testMotor.setPower(gamepad1.left_stick_y);
 
-            if (gamepad2.b) {
-                servoArmSpinner.setPosition(0.5);
-            }
-
-            if (gamepad2.y) {
-                servoArmSpinner.setPosition(SPIN_BACKWARD);
-            }
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Grabber: ", grabPosition);
+            telemetry.addData("Testing motor", motorName);
+            telemetry.addData("Power: ", testMotor.getPower());
             telemetry.update();
         }
     }
