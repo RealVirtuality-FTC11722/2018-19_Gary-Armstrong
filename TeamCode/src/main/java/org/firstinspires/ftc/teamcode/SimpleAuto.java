@@ -134,13 +134,14 @@ public class SimpleAuto extends LinearOpMode {
             telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
 
-            DropFromLander();
-            LocateSelf();
-            DriveToGold();
-            LocateSelf();
-            DriveToCorner();
-            PlaceMarker();
-            LocateSelf();
-            DriveToCrater();
+            //DropFromLander();
+            //LocateSelf();
+            //DriveToGold();
+            //LocateSelf();
+            //DriveToCorner();
+            //PlaceMarker();
+            //LocateSelf();
+            //DriveToCrater();
+        }
     }
 }
