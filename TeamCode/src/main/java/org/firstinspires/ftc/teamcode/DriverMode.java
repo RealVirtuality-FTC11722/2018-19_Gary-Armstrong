@@ -67,6 +67,8 @@ public class DriverMode extends LinearOpMode {
                     BotControls.TurnStick(this),
                     BotControls.DriveThrottle(this));
 
+            astroGary.myLanderLatcher.LifterControl(BotControls.LanderLatchRaiseButton(this), BotControls.LanderLatchLowerButton(this));
+
             //Glyph Grabber Control
             if (!astroGary.myGlyphLifter.GRAB_LOCKED) { //only allow control of grabber if not locked.
 //                indianaGary.myGlyphLifter.GrabberControl(BotControls.GlyphGrabTrigger(this));

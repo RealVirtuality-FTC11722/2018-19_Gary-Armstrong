@@ -19,7 +19,7 @@ public class MecanumDrive {
     public DcMotor motorBL = null;
     public DcMotor motorBR = null;
     public static double Turn_Power = 0.15;
-    double DRIVE_POWER_MAX_LOW = 0.3; //Maximum drive power with not throttle
+    double DRIVE_POWER_MAX_LOW = 0.3; //Maximum drive power without throttle
     // IMU sensor object (gyro)
     BNO055IMU imu;
 
@@ -32,10 +32,10 @@ public class MecanumDrive {
         myHWMap = myNewHWMap;
 
         //Initialize wheel motors
-        motorFL  = myHWMap.dcMotor.get("motor_fl");
-        motorFR  = myHWMap.dcMotor.get("motor_fr");
-        motorBL  = myHWMap.dcMotor.get("motor_bl");
-        motorBR  = myHWMap.dcMotor.get("motor_br");
+        motorFL  = myHWMap.dcMotor.get("motorFL");
+        motorFR  = myHWMap.dcMotor.get("motorFR");
+        motorBL  = myHWMap.dcMotor.get("motorBL");
+        motorBR  = myHWMap.dcMotor.get("motorBR");
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
@@ -70,10 +70,10 @@ public class MecanumDrive {
         myHWMap = myNewHWMap;
 
         //Initialize wheel motors
-        motorFL = myHWMap.dcMotor.get("motor_fl");
-        motorFR = myHWMap.dcMotor.get("motor_fr");
-        motorBL = myHWMap.dcMotor.get("motor_bl");
-        motorBR = myHWMap.dcMotor.get("motor_br");
+        motorFL = myHWMap.dcMotor.get("motorFL");
+        motorFR = myHWMap.dcMotor.get("motorFR");
+        motorBL = myHWMap.dcMotor.get("motorBL");
+        motorBR = myHWMap.dcMotor.get("motorBR");
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
@@ -107,14 +107,14 @@ public class MecanumDrive {
         imu.initialize(parameters);
     }
 
-    public void initTele(HardwareMap myNewHWMap) {
-        myHWMap = myNewHWMap;
+    public void initTele(HardwareMap myHWMap) {
+        //myHWMap = myNewHWMap;
 
         //Initialize wheel motors
-        motorFL = myHWMap.dcMotor.get("motor_fl");
-        motorFR = myHWMap.dcMotor.get("motor_fr");
-        motorBL = myHWMap.dcMotor.get("motor_bl");
-        motorBR = myHWMap.dcMotor.get("motor_br");
+        motorFL = myHWMap.dcMotor.get("motorFL");
+        motorFR = myHWMap.dcMotor.get("motorFR");
+        motorBL = myHWMap.dcMotor.get("motorBL");
+        motorBR = myHWMap.dcMotor.get("motorBR");
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
@@ -135,19 +135,19 @@ public class MecanumDrive {
         double r = Math.hypot(xStick, yStick);
         double robotAngle = Math.atan2(-yStick, xStick) - Math.PI / 4;
         //Set minimum throttle value so the trigger does not need to be pressed to drive
-        double trottle = 1 - trigger * (1-DRIVE_POWER_MAX_LOW);
-        //double trottle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
-        //Cube the value of turnstick so there's more control over low turn speeds
+        double throttle = 1 - trigger * (1-DRIVE_POWER_MAX_LOW);
+        //double throttle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
+        //Cube the value of turnStick so there's more control over low turn speeds
         double rightX = Math.pow(turnStick, 3);
         final double v1 = r * Math.cos(robotAngle) + rightX;
         final double v2 = r * Math.sin(robotAngle) - rightX;
         final double v3 = r * Math.sin(robotAngle) + rightX;
         final double v4 = r * Math.cos(robotAngle) - rightX;
 
-        motorFL.setPower(v1*trottle);
-        motorFR.setPower(v2*trottle);
-        motorBL.setPower(v3*trottle);
-        motorBR.setPower(v4*trottle);
+        motorFL.setPower(v1*throttle);
+        motorFR.setPower(v2*throttle);
+        motorBL.setPower(v3*throttle);
+        motorBR.setPower(v4*throttle);
     }
 
     //Method to stop all power to the wheel motors
@@ -156,7 +156,7 @@ public class MecanumDrive {
         motorBR.setPower(0);
         motorFL.setPower(0);
         motorBL.setPower(0);
-        try { //Pause for amoment to let motion come to a stop
+        try { //Pause for a moment to let motion come to a stop
             Thread.sleep(500);
         } catch (InterruptedException e){
             Thread.currentThread().interrupt();
@@ -164,7 +164,7 @@ public class MecanumDrive {
     }
 
     //Method for autonomous driving forward and backwards
-    //distance is specifed in inches (positive = drive forward, negative = drive backward)
+    //distance is specified in inches (positive = drive forward, negative = drive backward)
     //timeout value is used to interrupt drive routine if robot gets stuck
     //and cannot reach the specified destination
     //This method returns true of false to indicate if the robot successfully reached the target
