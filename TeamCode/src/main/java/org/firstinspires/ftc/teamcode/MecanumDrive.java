@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -144,8 +145,8 @@ public class MecanumDrive {
         final double v3 = r * Math.sin(robotAngle) + rightX;
         final double v4 = r * Math.cos(robotAngle) - rightX;
 
-        motorFL.setPower(v1*throttle);
-        motorFR.setPower(v2*throttle);
+        motorFL.setPower(Range.clip(v1*throttle*1.1,-1.0, 1.0));
+        motorFR.setPower(Range.clip(v2*throttle*1.1,-1.0, 1.0));
         motorBL.setPower(v3*throttle);
         motorBR.setPower(v4*throttle);
     }

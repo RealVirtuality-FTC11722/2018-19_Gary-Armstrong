@@ -55,7 +55,7 @@ public class GlyphLifter {
         POS_3     = POS_START + 1500;
     }
 
-    public void initMotor(HardwareMap myNewHWMap) {
+    public void initMotors(HardwareMap myNewHWMap) {
         myHWMap = myNewHWMap;
         motorLift = myHWMap.dcMotor.get("motor_glyph_lifter");
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

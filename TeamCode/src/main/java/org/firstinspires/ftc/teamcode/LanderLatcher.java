@@ -18,20 +18,23 @@ public class LanderLatcher {
     public void LanderLatcher() { //constructor
     }
 
-    public void init(HardwareMap myNewHWMap) {
+    public void initMotors(HardwareMap myNewHWMap) {
         myHWMap = myNewHWMap;
-
-        //Hook Initialization
-        servoLanderHook = myHWMap.servo.get("servoHookLander");
-        servoLanderHook.setDirection(Servo.Direction.REVERSE);
-        servoLanderHook.setPosition(LATCHED);
 
         //Lifter Initialization
         motorLanderLift = myHWMap.dcMotor.get("motorLanderLatch");
         motorLanderLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLanderLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLanderLift.setDirection(DcMotor.Direction.FORWARD);
-        //POS_START = motorLift.getCurrentPosition();
+    }
+
+    public void initServos(HardwareMap myNewHWMap) {
+        myHWMap = myNewHWMap;
+
+        //Hook Initialization
+        servoLanderHook = myHWMap.servo.get("servoHookLander");
+        servoLanderHook.setDirection(Servo.Direction.REVERSE);
+        servoLanderHook.setPosition(LATCHED);
     }
 
     public void LowerToGround() {
@@ -57,6 +60,15 @@ public class LanderLatcher {
             motorLanderLift.setPower(0);
         }
 
+    }
+
+    public void LatchControl (boolean latchBtn, boolean unlatchBtn) {
+        if (latchBtn) {
+            servoLanderHook.setPosition(LATCHED);
+        }
+        if (unlatchBtn) {
+            servoLanderHook.setPosition(UNLATCHED);
+        }
     }
 
 }

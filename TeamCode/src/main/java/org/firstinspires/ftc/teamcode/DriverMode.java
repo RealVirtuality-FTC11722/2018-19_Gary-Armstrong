@@ -36,8 +36,6 @@ public class DriverMode extends LinearOpMode {
         astroGary.InitMotors(hardwareMap);
         //for manual driving encoder is not needed in the drive motors.
 
-        astroGary.myLanderLatcher.LowerToGround();
-
         //Set toggle initial states
         boolean rtTogglePressed = false;
         boolean rtToggleReleased = true;
@@ -67,12 +65,19 @@ public class DriverMode extends LinearOpMode {
                     BotControls.TurnStick(this),
                     BotControls.DriveThrottle(this));
 
+            //LanderLatcher manual controls
             astroGary.myLanderLatcher.LifterControl(BotControls.LanderLatchRaiseButton(this), BotControls.LanderLatchLowerButton(this));
+            astroGary.myLanderLatcher.LatchControl(BotControls.LanderLatchHookOnButton(this), BotControls.LanderLatchHookOffButton(this));
+
+            //Mineral Grabber Controls
+            astroGary.myMineralGrabber.SpinnerControl(BotControls.SpinnerForwardButton(this),
+                                                      BotControls.SpinnerStopButton(this),
+                                                      BotControls.SpinnerBackwardButton(this));
 
             //Glyph Grabber Control
-            if (!astroGary.myGlyphLifter.GRAB_LOCKED) { //only allow control of grabber if not locked.
+            //if (!astroGary.myGlyphLifter.GRAB_LOCKED) { //only allow control of grabber if not locked.
 //                indianaGary.myGlyphLifter.GrabberControl(BotControls.GlyphGrabTrigger(this));
-            }
+            //}
 
             if (rtTogglePressed) {
                 rtToggleReleased = false;
