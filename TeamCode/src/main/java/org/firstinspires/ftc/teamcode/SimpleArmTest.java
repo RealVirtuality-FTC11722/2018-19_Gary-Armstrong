@@ -50,9 +50,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Simple Wheel Test", group="Training")
+@TeleOp(name="Simple Drive Test", group="Training")
 //@Disabled
-public class SimpleWheelTest extends LinearOpMode {
+public class SimpleArmTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -112,6 +112,13 @@ public class SimpleWheelTest extends LinearOpMode {
         servoArmWrist.setDirection(CRServo.Direction.FORWARD);
         servoHookLander.setDirection(Servo.Direction.REVERSE);
         motorLanderLatch.setDirection(DcMotor.Direction.FORWARD);
+        motorArmSwivel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmSwivel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArmElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         //grabby.setDirection(Servo.Direction.FORWARD);
 
         motorFL.setPower(0);
@@ -125,8 +132,6 @@ public class SimpleWheelTest extends LinearOpMode {
         servoArmSpinner.setPower(0.5);
         servoHookLander.setPosition(0.5);
         motorLanderLatch.setPower(0);
-        DcMotor testMotor = motorFR;
-        String motorName = "FR";
         //grabby.setPosition(0);
 
         // Wait for the game to start (driver presses PLAY)
@@ -135,56 +140,12 @@ public class SimpleWheelTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if (gamepad1.dpad_up) {
-                motorFL.setPower(0.5);
-                motorFR.setPower(0.5);
-                motorBL.setPower(0.5);
-                motorBR.setPower(0.5);
-            }
 
-            else if (gamepad1.dpad_down) {
-                motorFL.setPower(-0.5);
-                motorFR.setPower(-0.5);
-                motorBL.setPower(-0.5);
-                motorBR.setPower(-0.5);
-            }
-
-            else if (gamepad1.dpad_left) {
-                motorFL.setPower(-0.5);
-                motorFR.setPower(0.5);
-                motorBL.setPower(0.5);
-                motorBR.setPower(-0.5);
-            }
-
-            else if (gamepad1.dpad_right) {
-                motorFL.setPower(0.5);
-                motorFR.setPower(-0.5);
-                motorBL.setPower(-0.5);
-                motorBR.setPower(0.5);
-            }
-            else {
-                if (gamepad1.a) {
-                    testMotor = motorBL;
-                    motorName = "BL";
-                }
-                if (gamepad1.b) {
-                    testMotor = motorBR;
-                    motorName = "BR";
-                }
-                if (gamepad1.x) {
-                    testMotor = motorFL;
-                    motorName = "FL";
-                }
-                if (gamepad1.y) {
-                    testMotor = motorFR;
-                    motorName = "FR";
-                }
-                testMotor.setPower(gamepad1.left_stick_y);
-            }
-
-
-            telemetry.addData("Testing motor", motorName);
-            telemetry.addData("Power: ", testMotor.getPower());
+            // Show the elapsed game time and arm motor positions.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("ArmSwivel Position: ", motorArmSwivel.getCurrentPosition());
+            telemetry.addData("ArmLift Position: ", motorArmLift.getCurrentPosition());
+            telemetry.addData("ArmElbow Position: ", motorArmElbow.getCurrentPosition());
             telemetry.update();
         }
     }

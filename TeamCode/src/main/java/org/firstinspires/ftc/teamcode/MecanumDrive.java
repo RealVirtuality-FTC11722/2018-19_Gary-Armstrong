@@ -145,10 +145,10 @@ public class MecanumDrive {
         final double v3 = r * Math.sin(robotAngle) + rightX;
         final double v4 = r * Math.cos(robotAngle) - rightX;
 
-        motorFL.setPower(Range.clip(v1*throttle*1.1,-1.0, 1.0));
-        motorFR.setPower(Range.clip(v2*throttle*1.1,-1.0, 1.0));
-        motorBL.setPower(v3*throttle);
-        motorBR.setPower(v4*throttle);
+        motorFL.setPower(v1*throttle);
+        motorFR.setPower(v2*throttle);
+        motorBL.setPower(0.9*v3*throttle);
+        motorBR.setPower(0.9*v4*throttle);
     }
 
     //Method to stop all power to the wheel motors

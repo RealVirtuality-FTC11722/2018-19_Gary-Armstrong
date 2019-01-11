@@ -34,5 +34,7 @@ public class BotControls {
     public static boolean MineralArmTurnRightButton(LinearOpMode op){return op.gamepad2.dpad_right;}
     public static boolean MineralArmTurnLeftButton(LinearOpMode op) {return op.gamepad2.dpad_left;}
     public static double  MineralArmForwardStick(LinearOpMode op)   {return  op.gamepad2.right_stick_y;}
+    public static boolean MineralGrabberCollectButton(LinearOpMode op) {return op.gamepad2.right_bumper;}
+    public static boolean MineralGrabberFoldButton(LinearOpMode op) {return  op.gamepad2.left_bumper;}
 
 }

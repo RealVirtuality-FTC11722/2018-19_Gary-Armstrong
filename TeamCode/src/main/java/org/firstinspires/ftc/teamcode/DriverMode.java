@@ -73,6 +73,13 @@ public class DriverMode extends LinearOpMode {
             astroGary.myMineralGrabber.SpinnerControl(BotControls.SpinnerForwardButton(this),
                                                       BotControls.SpinnerStopButton(this),
                                                       BotControls.SpinnerBackwardButton(this));
+            if (BotControls.MineralGrabberCollectButton(this)){
+                astroGary.myMineralGrabber.CollectMode();
+            }
+            if (BotControls.MineralGrabberFoldButton(this)){
+                astroGary.myMineralGrabber.DriveMode();
+            }
+
 
             //Glyph Grabber Control
             //if (!astroGary.myGlyphLifter.GRAB_LOCKED) { //only allow control of grabber if not locked.

@@ -87,8 +87,8 @@ public class MineralGrabber {
         motorArmLift.setTargetPosition(ARM_SCORE_POS);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmElbow.setTargetPosition(FOREARM_SCORE_POS);
-        motorArmLift.setPower(0.5);
-        motorArmElbow.setPower(0.5);
+        motorArmLift.setPower(0.2);
+        motorArmElbow.setPower(0.2);
         servoArmWrist.setPosition(WRIST_SCORE_POS);
     }
 
@@ -98,19 +98,25 @@ public class MineralGrabber {
         motorArmLift.setTargetPosition(ARM_COLLECT_POS);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmElbow.setTargetPosition(FOREARM_COLLECT_POS);
-        motorArmLift.setPower(0.5);
-        motorArmElbow.setPower(0.5);
+        motorArmLift.setPower(0.2);
+        motorArmElbow.setPower(0.2);
         servoArmWrist.setPosition(WRIST_COLLECT_POS);
     }
 
     //Partially fold up mineral grabber for driving
     public void DriveMode() {
-
+        motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorArmLift.setTargetPosition(ARM_FOLD_POS);
+        motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorArmElbow.setTargetPosition(FOREARM_FOLD_POS);
+        motorArmLift.setPower(0.2);
+        motorArmElbow.setPower(0.2);
+        servoArmWrist.setPosition(WRIST_FOLD_POS);
     }
 
     public void Extend(boolean outBtn, boolean inBtn) {
-        motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER;
-        motorArmElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER;
+        motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         if (outBtn) {
             motorArmLift.setTargetPosition(motorArmLift.getCurrentPosition()+1);
             motorArmElbow.setTargetPosition(motorArmElbow.getCurrentPosition()+1);
