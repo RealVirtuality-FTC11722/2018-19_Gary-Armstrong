@@ -10,7 +10,7 @@ public class LanderLatcher {
     HardwareMap myHWMap;
     public Servo servoLanderHook = null;
     public DcMotor motorLanderLift = null;
-    public int LIFT_MAX_POS = 10;
+    public int LIFT_MAX_POS = 10000;
     public int LIFT_MIN_POS = 0;
     private double LATCHED = 0.5;
     private double UNLATCHED = 0.0;
@@ -53,7 +53,7 @@ public class LanderLatcher {
         if (raiseBtn && (motorLanderLift.getCurrentPosition() <= LIFT_MAX_POS)) {
             motorLanderLift.setPower(1.0);
         }
-        else if (lowerBtn && (motorLanderLift.getCurrentPosition() >= LIFT_MIN_POS)) {
+        else if (lowerBtn) {
             motorLanderLift.setPower(-1.0);
         }
         else {

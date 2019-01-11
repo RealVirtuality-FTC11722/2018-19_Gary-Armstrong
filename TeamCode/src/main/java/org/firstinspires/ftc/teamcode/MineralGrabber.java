@@ -20,22 +20,22 @@ public class MineralGrabber {
     public double SPIN_FORWARD = 0.7;
     public double SPIN_BACKWARD = 0.3;
     public double CRSERVO_STOP = 0.5;
-    public int WRIST_FOLD_POS = 0;
-    public int WRIST_COLLECT_POS = 0;
-    public int WRIST_SCORE_POS = 0;
+    public double WRIST_FOLD_POS = 0.40;
+    public double WRIST_COLLECT_POS = 0.45;
+    public double WRIST_SCORE_POS = 0.5;
 
     public double ARM_LENGTH = 1;
     public double ARM_MIN_ANGLE = 0;
     public double ARM_MAX_ANGLE = 90;
     public int ARM_FOLD_POS = 0;
-    public int ARM_COLLECT_POS = 0;
+    public int ARM_COLLECT_POS = 600;
     public int ARM_SCORE_POS = 0;
 
     public double FOREARM_LENGTH = 1;
     public double FOREARM_MIN_ANGLE = 0;
     public double FOREARM_MAX_ANGLE = 90;
     public int FOREARM_FOLD_POS = 0;
-    public int FOREARM_COLLECT_POS = 0;
+    public int FOREARM_COLLECT_POS = -400;
     public int FOREARM_SCORE_POS = 0;
 
     public void MineralGrabber() { //constructor
@@ -87,30 +87,30 @@ public class MineralGrabber {
         motorArmLift.setTargetPosition(ARM_SCORE_POS);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmElbow.setTargetPosition(FOREARM_SCORE_POS);
-        motorArmLift.setPower(0.2);
-        motorArmElbow.setPower(0.2);
+        motorArmLift.setPower(0.02);
+        motorArmElbow.setPower(0.02);
         servoArmWrist.setPosition(WRIST_SCORE_POS);
     }
 
     //Lower Mineral Grabber to ground and start Spinner
     public void CollectMode() {
         motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorArmLift.setTargetPosition(ARM_COLLECT_POS);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorArmLift.setTargetPosition(ARM_COLLECT_POS);
         motorArmElbow.setTargetPosition(FOREARM_COLLECT_POS);
-        motorArmLift.setPower(0.2);
-        motorArmElbow.setPower(0.2);
+        motorArmLift.setPower(0.02);
+        motorArmElbow.setPower(0.02);
         servoArmWrist.setPosition(WRIST_COLLECT_POS);
     }
 
     //Partially fold up mineral grabber for driving
     public void DriveMode() {
         motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorArmLift.setTargetPosition(ARM_FOLD_POS);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorArmLift.setTargetPosition(ARM_FOLD_POS);
         motorArmElbow.setTargetPosition(FOREARM_FOLD_POS);
-        motorArmLift.setPower(0.2);
-        motorArmElbow.setPower(0.2);
+        motorArmLift.setPower(0.03);
+        motorArmElbow.setPower(0.03);
         servoArmWrist.setPosition(WRIST_FOLD_POS);
     }
 

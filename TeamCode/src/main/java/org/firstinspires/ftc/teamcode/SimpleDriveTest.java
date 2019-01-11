@@ -66,11 +66,11 @@ public class SimpleDriveTest extends LinearOpMode {
     private DcMotor motorArmSwivel = null;
     private DcMotor motorArmLift = null;
     private DcMotor motorArmElbow = null;
-    private CRServo servoArmWrist = null;
+    private Servo servoArmWrist = null;
     private CRServo servoArmSpinner = null;
     private Servo servoHookLander = null;
     private DcMotor motorLanderLatch = null;
-    private double START_POSITION = 0.5;
+    private double START_POSITION = 0.4;
     private double SWIVEL_POWER = 0.2;
     private double MAX_LIFT_POWER = 0.2;
     private double MAX_ELBOW_POWER = 0.4;
@@ -96,7 +96,7 @@ public class SimpleDriveTest extends LinearOpMode {
         motorArmSwivel = hardwareMap.get(DcMotor.class, "motorArmSwivel");
         motorArmLift = hardwareMap.get(DcMotor.class, "motorArmLift");
         motorArmElbow = hardwareMap.get(DcMotor.class, "motorArmElbow");
-        servoArmWrist = hardwareMap.get(CRServo.class, "servoArmWrist");
+        servoArmWrist = hardwareMap.get(Servo.class, "servoArmWrist");
         servoArmSpinner = hardwareMap.get (CRServo.class, "servoArmSpinner");
         servoHookLander = hardwareMap.get (Servo.class, "servoHookLander");
         motorLanderLatch = hardwareMap.get (DcMotor.class, "motorLanderLatch");
@@ -112,7 +112,7 @@ public class SimpleDriveTest extends LinearOpMode {
         motorArmLift.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
         servoArmSpinner.setDirection(CRServo.Direction.FORWARD);
-        servoArmWrist.setDirection(CRServo.Direction.FORWARD);
+        servoArmWrist.setDirection(Servo.Direction.FORWARD);
         servoHookLander.setDirection(Servo.Direction.REVERSE);
         motorLanderLatch.setDirection(DcMotor.Direction.FORWARD);
         //grabby.setDirection(Servo.Direction.FORWARD);
@@ -124,7 +124,7 @@ public class SimpleDriveTest extends LinearOpMode {
         motorArmSwivel.setPower(0);
         motorArmLift.setPower(0);
         motorArmElbow.setPower(0);
-        servoArmWrist.setPower(START_POSITION);
+        servoArmWrist.setPosition(START_POSITION);
         servoArmSpinner.setPower(0.5);
         servoHookLander.setPosition(0.5);
         motorLanderLatch.setPower(0);
@@ -190,7 +190,8 @@ public class SimpleDriveTest extends LinearOpMode {
             motorArmElbow.setPower(gamepad2.right_trigger * MAX_ELBOW_POWER);
             motorArmElbow.setPower(- gamepad2.left_trigger * MAX_ELBOW_POWER);
 
-            servoArmWrist.setPower(gamepad2.left_stick_y);
+            servoArmWrist.setPosition(0.3 + Range.clip(gamepad2.left_stick_y, -0.3, 0.7));
+            telemetry.addData("ServoWrist: ", servoArmWrist.getPosition());
 
             if (gamepad2.a) {
                 servoArmSpinner.setPower(SPIN_FORWARD);

@@ -57,6 +57,7 @@ public class DriverMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Latch Height: ", astroGary.myLanderLatcher.motorLanderLift.getCurrentPosition());
             telemetry.update();
 
             //pass controls to the drive control method.
@@ -64,6 +65,13 @@ public class DriverMode extends LinearOpMode {
                     BotControls.DriveXStick(this),
                     BotControls.TurnStick(this),
                     BotControls.DriveThrottle(this));
+            telemetry.addData("FR: ", astroGary.drive.motorFR.getPower());
+            telemetry.addData("FL: ", astroGary.drive.motorFL.getPower());
+            telemetry.addData("BR: ", astroGary.drive.motorBR.getPower());
+            telemetry.addData("BL: ", astroGary.drive.motorBL.getPower());
+            telemetry.addData("Throttle: ", astroGary.drive.THR);
+
+
 
             //LanderLatcher manual controls
             astroGary.myLanderLatcher.LifterControl(BotControls.LanderLatchRaiseButton(this), BotControls.LanderLatchLowerButton(this));

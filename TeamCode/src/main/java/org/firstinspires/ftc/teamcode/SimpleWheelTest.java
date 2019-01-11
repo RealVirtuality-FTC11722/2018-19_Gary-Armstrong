@@ -63,7 +63,7 @@ public class SimpleWheelTest extends LinearOpMode {
     private DcMotor motorArmSwivel = null;
     private DcMotor motorArmLift = null;
     private DcMotor motorArmElbow = null;
-    private CRServo servoArmWrist = null;
+    private Servo servoArmWrist = null;
     private CRServo servoArmSpinner = null;
     private Servo servoHookLander = null;
     private DcMotor motorLanderLatch = null;
@@ -93,7 +93,7 @@ public class SimpleWheelTest extends LinearOpMode {
         motorArmSwivel = hardwareMap.get(DcMotor.class, "motorArmSwivel");
         motorArmLift = hardwareMap.get(DcMotor.class, "motorArmLift");
         motorArmElbow = hardwareMap.get(DcMotor.class, "motorArmElbow");
-        servoArmWrist = hardwareMap.get(CRServo.class, "servoArmWrist");
+        servoArmWrist = hardwareMap.get(Servo.class, "servoArmWrist");
         servoArmSpinner = hardwareMap.get (CRServo.class, "servoArmSpinner");
         servoHookLander = hardwareMap.get (Servo.class, "servoHookLander");
         motorLanderLatch = hardwareMap.get (DcMotor.class, "motorLanderLatch");
@@ -109,7 +109,7 @@ public class SimpleWheelTest extends LinearOpMode {
         motorArmLift.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
         servoArmSpinner.setDirection(CRServo.Direction.FORWARD);
-        servoArmWrist.setDirection(CRServo.Direction.FORWARD);
+        servoArmWrist.setDirection(Servo.Direction.FORWARD);
         servoHookLander.setDirection(Servo.Direction.REVERSE);
         motorLanderLatch.setDirection(DcMotor.Direction.FORWARD);
         //grabby.setDirection(Servo.Direction.FORWARD);
@@ -121,7 +121,7 @@ public class SimpleWheelTest extends LinearOpMode {
         motorArmSwivel.setPower(0);
         motorArmLift.setPower(0);
         motorArmElbow.setPower(0);
-        servoArmWrist.setPower(START_POSITION);
+        servoArmWrist.setPosition(START_POSITION);
         servoArmSpinner.setPower(0.5);
         servoHookLander.setPosition(0.5);
         motorLanderLatch.setPower(0);
@@ -135,52 +135,57 @@ public class SimpleWheelTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            if (gamepad1.a) {
+                testMotor = motorBL;
+                motorName = "BL";
+            }
+            if (gamepad1.b) {
+                testMotor = motorBR;
+                motorName = "BR";
+            }
+            if (gamepad1.x) {
+                testMotor = motorFL;
+                motorName = "FL";
+            }
+            if (gamepad1.y) {
+                testMotor = motorFR;
+                motorName = "FR";
+            }
+            testMotor.setPower(gamepad1.left_stick_y);
             if (gamepad1.dpad_up) {
-                motorFL.setPower(0.5);
-                motorFR.setPower(0.5);
-                motorBL.setPower(0.5);
-                motorBR.setPower(0.5);
+                motorFL.setPower(0.2);
+                motorFR.setPower(0.2);
+                motorBL.setPower(0.2);
+                motorBR.setPower(0.2);
             }
 
             else if (gamepad1.dpad_down) {
-                motorFL.setPower(-0.5);
-                motorFR.setPower(-0.5);
-                motorBL.setPower(-0.5);
-                motorBR.setPower(-0.5);
+                motorFL.setPower(-0.2);
+                motorFR.setPower(-0.2);
+                motorBL.setPower(-0.2);
+                motorBR.setPower(-0.2);
             }
 
             else if (gamepad1.dpad_left) {
-                motorFL.setPower(-0.5);
-                motorFR.setPower(0.5);
-                motorBL.setPower(0.5);
-                motorBR.setPower(-0.5);
+                motorFL.setPower(-0.2);
+                motorFR.setPower(0.2);
+                motorBL.setPower(0.2);
+                motorBR.setPower(-0.2);
             }
 
             else if (gamepad1.dpad_right) {
-                motorFL.setPower(0.5);
-                motorFR.setPower(-0.5);
-                motorBL.setPower(-0.5);
-                motorBR.setPower(0.5);
+                motorFL.setPower(0.2);
+                motorFR.setPower(-0.2);
+                motorBL.setPower(-0.2);
+                motorBR.setPower(0.2);
             }
-            else {
-                if (gamepad1.a) {
-                    testMotor = motorBL;
-                    motorName = "BL";
-                }
-                if (gamepad1.b) {
-                    testMotor = motorBR;
-                    motorName = "BR";
-                }
-                if (gamepad1.x) {
-                    testMotor = motorFL;
-                    motorName = "FL";
-                }
-                if (gamepad1.y) {
-                    testMotor = motorFR;
-                    motorName = "FR";
-                }
-                testMotor.setPower(gamepad1.left_stick_y);
+            else if (gamepad1.left_bumper){
+                motorFL.setPower(0);
+                motorFR.setPower(0);
+                motorBL.setPower(0);
+                motorBR.setPower(0);
             }
+
 
 
             telemetry.addData("Testing motor", motorName);

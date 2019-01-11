@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Simple Drive Test", group="Training")
+@TeleOp(name="Simple Arm Test", group="Test")
 //@Disabled
 public class SimpleArmTest extends LinearOpMode {
 
@@ -63,11 +63,11 @@ public class SimpleArmTest extends LinearOpMode {
     private DcMotor motorArmSwivel = null;
     private DcMotor motorArmLift = null;
     private DcMotor motorArmElbow = null;
-    private CRServo servoArmWrist = null;
+    private Servo servoArmWrist = null;
     private CRServo servoArmSpinner = null;
     private Servo servoHookLander = null;
     private DcMotor motorLanderLatch = null;
-    private double START_POSITION = 0.5;
+    private double START_POSITION = 0.20;
     private double SWIVEL_POWER = 0.2;
     private double MAX_LIFT_POWER = 0.2;
     private double MAX_ELBOW_POWER = 0.4;
@@ -93,7 +93,7 @@ public class SimpleArmTest extends LinearOpMode {
         motorArmSwivel = hardwareMap.get(DcMotor.class, "motorArmSwivel");
         motorArmLift = hardwareMap.get(DcMotor.class, "motorArmLift");
         motorArmElbow = hardwareMap.get(DcMotor.class, "motorArmElbow");
-        servoArmWrist = hardwareMap.get(CRServo.class, "servoArmWrist");
+        servoArmWrist = hardwareMap.get(Servo.class, "servoArmWrist");
         servoArmSpinner = hardwareMap.get (CRServo.class, "servoArmSpinner");
         servoHookLander = hardwareMap.get (Servo.class, "servoHookLander");
         motorLanderLatch = hardwareMap.get (DcMotor.class, "motorLanderLatch");
@@ -109,15 +109,15 @@ public class SimpleArmTest extends LinearOpMode {
         motorArmLift.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
         servoArmSpinner.setDirection(CRServo.Direction.FORWARD);
-        servoArmWrist.setDirection(CRServo.Direction.FORWARD);
+        servoArmWrist.setDirection(Servo.Direction.FORWARD);
         servoHookLander.setDirection(Servo.Direction.REVERSE);
         motorLanderLatch.setDirection(DcMotor.Direction.FORWARD);
-        motorArmSwivel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorArmSwivel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorArmLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorArmElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmSwivel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorArmElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmSwivel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //grabby.setDirection(Servo.Direction.FORWARD);
 
@@ -128,11 +128,14 @@ public class SimpleArmTest extends LinearOpMode {
         motorArmSwivel.setPower(0);
         motorArmLift.setPower(0);
         motorArmElbow.setPower(0);
-        servoArmWrist.setPower(START_POSITION);
+        servoArmWrist.setPosition(START_POSITION);
         servoArmSpinner.setPower(0.5);
         servoHookLander.setPosition(0.5);
         motorLanderLatch.setPower(0);
         //grabby.setPosition(0);
+
+        int ArmLiftTarget = 0;
+        int ArmElbowTarget = 0;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -140,12 +143,36 @@ public class SimpleArmTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            if (gamepad1.dpad_up) {
+                ArmLiftTarget = ArmLiftTarget + 1;
+            }
+            if (gamepad1.dpad_down) {
+                ArmLiftTarget = ArmLiftTarget - 1;
+            }
+            if (gamepad1.y) {
+                ArmElbowTarget = ArmElbowTarget + 1;
+            }
+            if (gamepad1.a) {
+                ArmElbowTarget = ArmElbowTarget - 1;
+            }
+            motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorArmLift.setTargetPosition(ArmLiftTarget);
+            motorArmElbow.setTargetPosition(ArmElbowTarget);
+            motorArmElbow.setPower(0.03);
+            motorArmLift.setPower(0.03);
+
+            if (gamepad1.x) {
+                ArmLiftTarget = 600;
+                ArmElbowTarget = -300;
+            }
 
             // Show the elapsed game time and arm motor positions.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("ArmSwivel Position: ", motorArmSwivel.getCurrentPosition());
             telemetry.addData("ArmLift Position: ", motorArmLift.getCurrentPosition());
             telemetry.addData("ArmElbow Position: ", motorArmElbow.getCurrentPosition());
+            telemetry.addData("ArmLiftTarget: ", ArmLiftTarget);
             telemetry.update();
         }
     }

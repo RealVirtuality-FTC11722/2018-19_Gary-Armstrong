@@ -19,6 +19,7 @@ public class MecanumDrive {
     public DcMotor motorFR = null;
     public DcMotor motorBL = null;
     public DcMotor motorBR = null;
+    public double THR;
     public static double Turn_Power = 0.15;
     double DRIVE_POWER_MAX_LOW = 0.3; //Maximum drive power without throttle
     // IMU sensor object (gyro)
@@ -136,7 +137,8 @@ public class MecanumDrive {
         double r = Math.hypot(xStick, yStick);
         double robotAngle = Math.atan2(-yStick, xStick) - Math.PI / 4;
         //Set minimum throttle value so the trigger does not need to be pressed to drive
-        double throttle = 1 - trigger * (1-DRIVE_POWER_MAX_LOW);
+        double throttle = Range.clip(trigger, DRIVE_POWER_MAX_LOW, 1.0);
+        THR = throttle;
         //double throttle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
         //Cube the value of turnStick so there's more control over low turn speeds
         double rightX = Math.pow(turnStick, 3);
@@ -147,8 +149,8 @@ public class MecanumDrive {
 
         motorFL.setPower(v1*throttle);
         motorFR.setPower(v2*throttle);
-        motorBL.setPower(0.9*v3*throttle);
-        motorBR.setPower(0.9*v4*throttle);
+        motorBL.setPower(v3*throttle);
+        motorBR.setPower(v4*throttle);
     }
 
     //Method to stop all power to the wheel motors
