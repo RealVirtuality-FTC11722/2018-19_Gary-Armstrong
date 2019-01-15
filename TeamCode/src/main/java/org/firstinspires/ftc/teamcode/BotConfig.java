@@ -30,8 +30,10 @@ public class BotConfig {
     }
     public void InitTele(HardwareMap myNewHWMap){
         //myGlyphLifter.init(myNewHWMap);
-        //myMineralGrabber.init(myNewHWMap);
-        //myLanderLatcher.init(myNewHWMap);
+        myMineralGrabber.initServos(myNewHWMap);
+        myLanderLatcher.initServos(myNewHWMap);
+        myMineralGrabber.initMotors(myNewHWMap);
+        myLanderLatcher.initMotors(myNewHWMap);
         drive.initTele(myNewHWMap);
     }
 

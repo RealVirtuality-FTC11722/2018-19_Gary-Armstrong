@@ -139,6 +139,9 @@ public class MineralGrabber {
     //Unfold Mineral Grabber, reverse Spinner to drop off Team Marker
     public void DropTeamMarker() {
         CollectMode();
+        servoArmSpinner.setPower(SPIN_BACKWARD);
+        servoArmSpinner.setPower(0.5);
+        DriveMode();
 
     }
 }

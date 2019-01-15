@@ -32,8 +32,8 @@ public class DriverMode extends LinearOpMode {
         telemetry.addData("Status", "Initializing. Please Wait...");
         telemetry.update();
         //indianaGary.InitTele(hardwareMap);
-        astroGary.InitServos(hardwareMap);
-        astroGary.InitMotors(hardwareMap);
+        astroGary.InitTele(hardwareMap);
+        //astroGary.InitMotors(hardwareMap);
         //for manual driving encoder is not needed in the drive motors.
 
         //Set toggle initial states

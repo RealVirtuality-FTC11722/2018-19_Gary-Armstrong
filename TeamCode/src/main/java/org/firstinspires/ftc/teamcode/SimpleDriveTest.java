@@ -108,6 +108,10 @@ public class SimpleDriveTest extends LinearOpMode {
         motorFR.setDirection(DcMotor.Direction.FORWARD);
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorBR.setDirection(DcMotor.Direction.FORWARD);
+        motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorArmSwivel.setDirection(DcMotor.Direction.FORWARD);
         motorArmLift.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
@@ -154,10 +158,10 @@ public class SimpleDriveTest extends LinearOpMode {
             final double v3 = r * Math.sin(robotAngle) + rightX;
             final double v4 = r * Math.cos(robotAngle) - rightX;
 
-            motorFL.setPower(v1*throttle);
-            motorFR.setPower(v2*throttle);
-            motorBL.setPower(v3*throttle);
-            motorBR.setPower(v4*throttle);
+            motorFL.setPower(gamepad1.left_stick_y);
+            motorFR.setPower(gamepad1.left_stick_y);
+            motorBL.setPower(gamepad1.left_stick_y);
+            motorBR.setPower(gamepad1.left_stick_y);
 
             if (gamepad1.dpad_up) {
                 motorLanderLatch.setPower(1.0);

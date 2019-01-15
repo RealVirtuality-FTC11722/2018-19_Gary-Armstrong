@@ -50,7 +50,7 @@ public class LanderLatcher {
         //Make sure Lifter motor is using encoder when going to preset positions
         //Do NOT reset the encoder or min and max positions will change
         motorLanderLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        if (raiseBtn && (motorLanderLift.getCurrentPosition() <= LIFT_MAX_POS)) {
+        if (raiseBtn) {
             motorLanderLift.setPower(1.0);
         }
         else if (lowerBtn) {
