@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Simple Drive Test", group="Training")
-//@Disabled
+@Disabled
 public class SimpleDriveTest extends LinearOpMode {
 
     // Declare OpMode members.
