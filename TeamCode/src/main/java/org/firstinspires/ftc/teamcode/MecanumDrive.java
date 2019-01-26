@@ -19,7 +19,6 @@ public class MecanumDrive {
     public DcMotor motorFR = null;
     public DcMotor motorBL = null;
     public DcMotor motorBR = null;
-    public double THR;
     public static double Turn_Power = 0.15;
     double DRIVE_POWER_MAX_LOW = 0.3; //Maximum drive power without throttle
     // IMU sensor object (gyro)
@@ -124,10 +123,6 @@ public class MecanumDrive {
         motorFR.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         motorBL.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         motorBR.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        motorFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /**Method for manual control of drive system
@@ -136,23 +131,26 @@ public class MecanumDrive {
      turnStick control rotation (turn)
      Trigger controls the throttle (speed) */
     public void DriveControl(double yStick, double xStick, double turnStick, double trigger){
+        motorFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         double r = Math.hypot(xStick, yStick);
         double robotAngle = Math.atan2(-yStick, xStick) - Math.PI / 4;
         //Set minimum throttle value so the trigger does not need to be pressed to drive
-        double throttle = 1; //Range.clip(trigger, DRIVE_POWER_MAX_LOW, 1.0);
-        THR = throttle;
+        double throttle = 2*trigger;
         //double throttle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
         //Cube the value of turnStick so there's more control over low turn speeds
-        double rightX = Math.pow(turnStick, 3);
+        double rightX = turnStick; //Math.pow(turnStick, 3);
         final double v1 = r * Math.cos(robotAngle) + rightX;
         final double v2 = r * Math.sin(robotAngle) - rightX;
         final double v3 = r * Math.sin(robotAngle) + rightX;
         final double v4 = r * Math.cos(robotAngle) - rightX;
 
-        motorFL.setPower(v1*throttle);
-        motorFR.setPower(v2*throttle);
-        motorBL.setPower(v3*throttle);
-        motorBR.setPower(v4*throttle);
+        motorFL.setPower(v1*throttle/2);
+        motorFR.setPower(v2*throttle/2);
+        motorBL.setPower(v3*throttle/2);
+        motorBR.setPower(v4*throttle/2);
     }
 
     //Method to stop all power to the wheel motors

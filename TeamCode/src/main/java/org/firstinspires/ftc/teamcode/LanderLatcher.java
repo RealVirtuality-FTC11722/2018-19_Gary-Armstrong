@@ -37,7 +37,8 @@ public class LanderLatcher {
         servoLanderHook.setPosition(LATCHED);
     }
 
-    public void LowerToGround() {
+    public void LowerToGround(LinearOpMode op) {
+        motorLanderLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLanderLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorLanderLift.setTargetPosition(LIFT_MAX_POS);
         //Don't Unlatch until target position is reached

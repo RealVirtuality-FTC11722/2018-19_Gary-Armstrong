@@ -16,9 +16,9 @@ public class DriverMode extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    //creates a new robot named indianaGary
-    private BotConfig astroGary = new BotConfig();
 
+    //create a new robot named astroGary
+    private BotConfig astroGary = new BotConfig();
 
 
     @Override
@@ -31,18 +31,17 @@ public class DriverMode extends LinearOpMode {
         //Provide warning for drivers not to hit play until initializing is complete.
         telemetry.addData("Status", "Initializing. Please Wait...");
         telemetry.update();
-        //indianaGary.InitTele(hardwareMap);
+
+        //Use the Teleop initialization method
         astroGary.InitTele(hardwareMap);
-        //astroGary.InitMotors(hardwareMap);
-        //for manual driving encoder is not needed in the drive motors.
 
         //Set toggle initial states
         boolean rtTogglePressed = false;
         boolean rtToggleReleased = true;
         boolean ltTogglePressed = false;
         boolean ltToggleReleased = true;
-        boolean autoLift = false; //Used to enable auto motion of Glyph Lifter to preset Positions
-        //tell drivers that initializing is now complete
+
+        //Tell drivers that initializing is now complete
         telemetry.setAutoClear(true);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -60,27 +59,28 @@ public class DriverMode extends LinearOpMode {
             telemetry.addData("Latch Height: ", astroGary.myLanderLatcher.motorLanderLift.getCurrentPosition());
             telemetry.update();
 
-            //pass controls to the drive control method.
-            astroGary.drive.DriveControl(BotControls.DriveYStick(this),
+            //Pass controls to the drive control method.
+            astroGary.drive.DriveControl(
+                    BotControls.DriveYStick(this),
                     BotControls.DriveXStick(this),
                     BotControls.TurnStick(this),
                     BotControls.DriveThrottle(this));
-            telemetry.addData("FR: ", astroGary.drive.motorFR.getPower());
-            telemetry.addData("FL: ", astroGary.drive.motorFL.getPower());
-            telemetry.addData("BR: ", astroGary.drive.motorBR.getPower());
-            telemetry.addData("BL: ", astroGary.drive.motorBL.getPower());
-            telemetry.addData("Throttle: ", astroGary.drive.THR);
-
-
 
             //LanderLatcher manual controls
-            astroGary.myLanderLatcher.LifterControl(BotControls.LanderLatchRaiseButton(this), BotControls.LanderLatchLowerButton(this));
-            astroGary.myLanderLatcher.LatchControl(BotControls.LanderLatchHookOnButton(this), BotControls.LanderLatchHookOffButton(this));
+            astroGary.myLanderLatcher.LifterControl(
+                    BotControls.LanderLatchRaiseButton(this),
+                    BotControls.LanderLatchLowerButton(this));
+            astroGary.myLanderLatcher.LatchControl(
+                    BotControls.LanderLatchHookOnButton(this),
+                    BotControls.LanderLatchHookOffButton(this));
+            telemetry.addData("Lifter Height: ", astroGary.myLanderLatcher.motorLanderLift.getCurrentPosition());
 
             //Mineral Grabber Controls
-            astroGary.myMineralGrabber.SpinnerControl(BotControls.SpinnerForwardButton(this),
-                                                      BotControls.SpinnerStopButton(this),
-                                                      BotControls.SpinnerBackwardButton(this));
+            astroGary.myMineralGrabber.SpinnerControl(
+                    BotControls.SpinnerForwardButton(this),
+                    BotControls.SpinnerStopButton(this),
+                    BotControls.SpinnerBackwardButton(this));
+
             if (BotControls.MineralGrabberCollectButton(this)){
                 astroGary.myMineralGrabber.CollectMode();
             }
@@ -94,14 +94,14 @@ public class DriverMode extends LinearOpMode {
 //                indianaGary.myGlyphLifter.GrabberControl(BotControls.GlyphGrabTrigger(this));
             //}
 
-            if (rtTogglePressed) {
-                rtToggleReleased = false;
-            } else {
+//            if (rtTogglePressed) {
+//                rtToggleReleased = false;
+//            } else {
                 //Track when toggle button is released
-                rtToggleReleased = true;
-            }
+//                rtToggleReleased = true;
+//            }
 //            rtTogglePressed = BotControls.GlyphGrabLockButton(this);
-            if (rtToggleReleased) { //only do something if toggle is pressed after being released
+//            if (rtToggleReleased) { //only do something if toggle is pressed after being released
 //                if (BotControls.GlyphGrabLockButton(this) && !indianaGary.myGlyphLifter.GRAB_LOCKED){
 //                    indianaGary.myGlyphLifter.Grab();
 //                } else {
@@ -109,7 +109,7 @@ public class DriverMode extends LinearOpMode {
 //                        indianaGary.myGlyphLifter.Release();
 //                    }
 //                }
-          }
+//          }
 
 
         }

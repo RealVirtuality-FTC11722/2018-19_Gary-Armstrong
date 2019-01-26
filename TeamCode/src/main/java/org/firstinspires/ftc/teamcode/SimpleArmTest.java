@@ -78,6 +78,7 @@ public class SimpleArmTest extends LinearOpMode {
     private double UNLATCHED = 0.0;
     //private Servo grabby = null;
 
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
