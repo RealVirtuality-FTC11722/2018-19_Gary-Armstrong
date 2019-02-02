@@ -80,13 +80,13 @@ public class DriverMode extends LinearOpMode {
                     BotControls.SpinnerForwardButton(this),
                     BotControls.SpinnerStopButton(this),
                     BotControls.SpinnerBackwardButton(this));
-
-            if (BotControls.MineralGrabberCollectButton(this)){
-                astroGary.myMineralGrabber.CollectMode();
-            }
-            if (BotControls.MineralGrabberFoldButton(this)){
-                astroGary.myMineralGrabber.DriveMode();
-            }
+            astroGary.myMineralGrabber.ManualArmControl(gamepad2.left_stick_x, gamepad2.left_stick_y, gamepad2.right_stick_y);
+            //if (BotControls.MineralGrabberCollectButton(this)){
+            //    astroGary.myMineralGrabber.CollectMode();
+            //}
+            //if (BotControls.MineralGrabberFoldButton(this)){
+            //    astroGary.myMineralGrabber.DriveMode();
+            //}
 
 
             //Glyph Grabber Control

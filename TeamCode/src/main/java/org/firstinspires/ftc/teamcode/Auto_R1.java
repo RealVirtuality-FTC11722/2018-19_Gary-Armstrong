@@ -30,13 +30,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file illustrates the concept of driving a path based on time.
@@ -59,9 +54,9 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Autonomous Test", group="Test")
+@Autonomous(name="Autonomous R1", group="Auto")
 //@Disabled
-public class SimpleAutoTest extends LinearOpMode {
+public class Auto_R1 extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -87,7 +82,9 @@ public class SimpleAutoTest extends LinearOpMode {
             telemetry.addData("Runtime: ", runtime.seconds());
             telemetry.update();
 
-            //DropFromLander();
+            //DropFromLander
+            astroGary.myLanderLatcher.LowerToGround(this);
+            astroGary.drive.Drive(this, 1,10,10000);
             //LocateSelf();
             //DriveToGold();
             //LocateSelf();

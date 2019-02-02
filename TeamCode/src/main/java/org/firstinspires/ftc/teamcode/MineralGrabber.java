@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -10,16 +12,17 @@ public class MineralGrabber {
     public DcMotor motorArmLift = null;
     public DcMotor motorArmElbow = null;
     public Servo servoArmWrist = null;
-    public CRServo servoArmSpinner = null;
+    public CRServo servoArmSpinner1 = null;
+    public CRServo servoArmSpinner2 = null;
 
     public double SWIVEL_POWER = 0.2;
     public double SWIVEL_LEFT_LIMIT = -1;
     public double SWIVEL_RIGHT_LIMIT = 1;
     public double MAX_ELBOW_POWER = 0.4;
 
-    public double SPIN_FORWARD = 0.7;
-    public double SPIN_BACKWARD = 0.3;
-    public double CRSERVO_STOP = 0.5;
+    public double SPIN_FORWARD = 0.5;
+    public double SPIN_BACKWARD = -0.5;
+    public double CRSERVO_STOP = 0.0;
     public double WRIST_FOLD_POS = 0.40;
     public double WRIST_COLLECT_POS = 0.45;
     public double WRIST_SCORE_POS = 0.5;
@@ -57,28 +60,43 @@ public class MineralGrabber {
 
     public void initServos(HardwareMap myNewHWMap) {
         servoArmWrist = myNewHWMap.get(Servo.class, "servoArmWrist");
-        servoArmSpinner = myNewHWMap.get (CRServo.class, "servoArmSpinner");
+        servoArmSpinner1 = myNewHWMap.get (CRServo.class, "servoArmSpinner");
+        //servoArmSpinner2 = myNewHWMap.get (CRServo.class, "servoArmSpinner2");
 
-        servoArmSpinner.setDirection(CRServo.Direction.FORWARD);
+        servoArmSpinner1.setDirection(CRServo.Direction.FORWARD);
+        servoArmSpinner2.setDirection(CRServo.Direction.REVERSE);
         servoArmWrist.setDirection(Servo.Direction.FORWARD);
 
         servoArmWrist.setPosition(WRIST_FOLD_POS);
-        servoArmSpinner.setPower(CRSERVO_STOP);
+        servoArmSpinner1.setPower(CRSERVO_STOP);
+        servoArmSpinner2.setPower(CRSERVO_STOP);
     }
 
     public void SpinnerControl(boolean fowardBtn, boolean stopBtn, boolean backwardBtn) {
         if (fowardBtn) {
-            servoArmSpinner.setPower(SPIN_FORWARD);
+            servoArmSpinner1.setPower(SPIN_FORWARD);
+            //servoArmSpinner2.setPower(SPIN_FORWARD);
         }
 
         if (stopBtn) {
-            servoArmSpinner.setPower(CRSERVO_STOP);
+            servoArmSpinner1.setPower(CRSERVO_STOP);
+            //servoArmSpinner2.setPower(CRSERVO_STOP);
         }
 
         if (backwardBtn) {
-            servoArmSpinner.setPower(SPIN_BACKWARD);
+            servoArmSpinner1.setPower(SPIN_BACKWARD);
+            //servoArmSpinner2.setPower(SPIN_BACKWARD);
         }
 
+    }
+
+    public void ManualArmControl(double swivelStick, double liftStick, double elbowStick) {
+        double LIFT_POWER = 0.05;
+        double ELBOW_POWER = 0.05;
+        double SWIVEL_POWER = 0.05;
+        motorArmLift.setPower(liftStick*LIFT_POWER);
+        motorArmElbow.setPower(elbowStick*ELBOW_POWER);
+        motorArmSwivel.setPower(swivelStick*SWIVEL_POWER);
     }
 
     //Raise Mineral Grabber to scoring height and stop Spinner
@@ -137,11 +155,13 @@ public class MineralGrabber {
     }
 
     //Unfold Mineral Grabber, reverse Spinner to drop off Team Marker
-    public void DropTeamMarker() {
+    public void DropTeamMarker(LinearOpMode op) {
         CollectMode();
-        servoArmSpinner.setPower(SPIN_BACKWARD);
-        servoArmSpinner.setPower(0.5);
+        servoArmSpinner1.setPower(SPIN_BACKWARD);
+        servoArmSpinner2.setPower(SPIN_BACKWARD);
+        op.sleep(2000);
+        servoArmSpinner1.setPower(CRSERVO_STOP);
+        servoArmSpinner2.setPower(CRSERVO_STOP);
         DriveMode();
-
     }
 }

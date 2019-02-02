@@ -38,12 +38,17 @@ public class LanderLatcher {
     }
 
     public void LowerToGround(LinearOpMode op) {
-        motorLanderLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLanderLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorLanderLift.setTargetPosition(LIFT_MAX_POS);
+        //motorLanderLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //motorLanderLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //motorLanderLift.setTargetPosition(LIFT_MAX_POS);
         //Don't Unlatch until target position is reached
-        if (motorLanderLift.getCurrentPosition() >= LIFT_MAX_POS) {
+        while (op.opModeIsActive()){
+            motorLanderLift.setPower(1.0);
+            op.sleep(10000);
+            //if (motorLanderLift.getCurrentPosition() >= LIFT_MAX_POS) {
             servoLanderHook.setPosition(UNLATCHED);
+            motorLanderLift.setPower(0);
+            //}
         }
     }
 
