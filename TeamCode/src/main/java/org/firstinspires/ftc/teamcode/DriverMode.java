@@ -80,7 +80,13 @@ public class DriverMode extends LinearOpMode {
                     BotControls.SpinnerForwardButton(this),
                     BotControls.SpinnerStopButton(this),
                     BotControls.SpinnerBackwardButton(this));
-            astroGary.myMineralGrabber.ManualArmControl(gamepad2.left_stick_x, gamepad2.left_stick_y, gamepad2.right_stick_y);
+            astroGary.myMineralGrabber.ManualArmControl(
+                    gamepad2.left_stick_x,
+                    gamepad2.left_stick_y,
+                    gamepad2.right_stick_y,
+                    gamepad2.right_trigger);
+            telemetry.addData("Wrist Position: ", astroGary.myMineralGrabber.servoArmWrist.getPosition());
+            telemetry.addData("Arm Pos: ", astroGary.myMineralGrabber.motorArmLift.getCurrentPosition());
             //if (BotControls.MineralGrabberCollectButton(this)){
             //    astroGary.myMineralGrabber.CollectMode();
             //}

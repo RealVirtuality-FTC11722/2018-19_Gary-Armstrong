@@ -43,11 +43,14 @@ public class LanderLatcher {
         //motorLanderLift.setTargetPosition(LIFT_MAX_POS);
         //Don't Unlatch until target position is reached
         while (op.opModeIsActive()){
-            motorLanderLift.setPower(1.0);
-            op.sleep(10000);
-            //if (motorLanderLift.getCurrentPosition() >= LIFT_MAX_POS) {
-            servoLanderHook.setPosition(UNLATCHED);
-            motorLanderLift.setPower(0);
+            if (servoLanderHook.getPosition() == LATCHED) {
+
+                motorLanderLift.setPower(1.0);
+                op.sleep(17000);
+                //if (motorLanderLift.getCurrentPosition() >= LIFT_MAX_POS) {
+                servoLanderHook.setPosition(UNLATCHED);
+                motorLanderLift.setPower(0);
+            }
             //}
         }
     }

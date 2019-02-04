@@ -54,9 +54,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Auto Drive to Crator", group="Auto")
+@Autonomous(name="Autonomous B2", group="Auto")
 //@Disabled
-public class Auto_R1 extends LinearOpMode {
+public class Auto_B2 extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -78,14 +78,13 @@ public class Auto_R1 extends LinearOpMode {
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
         runtime.reset();
-        //while (opModeIsActive()) {
+        while (opModeIsActive()) {
             telemetry.addData("Runtime: ", runtime.seconds());
             telemetry.update();
 
             //DropFromLander
             astroGary.myLanderLatcher.LowerToGround(this);
-            astroGary.drive.Drive2(this, 1,3,10000);
-            astroGary.drive.StopWheels();
+            //astroGary.drive.Drive(this, 1,10,10000);
             //LocateSelf();
             //DriveToGold();
             //LocateSelf();
@@ -93,6 +92,6 @@ public class Auto_R1 extends LinearOpMode {
             //PlaceMarker();
             //LocateSelf();
             //DriveToCrater();
-        //}
+        }
     }
 }
