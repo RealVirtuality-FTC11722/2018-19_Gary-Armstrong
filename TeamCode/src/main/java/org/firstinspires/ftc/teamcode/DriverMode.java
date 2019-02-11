@@ -78,7 +78,6 @@ public class DriverMode extends LinearOpMode {
             //Mineral Grabber Controls
             astroGary.myMineralGrabber.SpinnerControl(
                     BotControls.SpinnerForwardButton(this),
-                    BotControls.SpinnerStopButton(this),
                     BotControls.SpinnerBackwardButton(this));
             astroGary.myMineralGrabber.ManualArmControl(
                     gamepad2.left_stick_x,
@@ -87,37 +86,21 @@ public class DriverMode extends LinearOpMode {
                     gamepad2.right_trigger);
             telemetry.addData("Wrist Position: ", astroGary.myMineralGrabber.servoArmWrist.getPosition());
             telemetry.addData("Arm Pos: ", astroGary.myMineralGrabber.motorArmLift.getCurrentPosition());
-            //if (BotControls.MineralGrabberCollectButton(this)){
-            //    astroGary.myMineralGrabber.CollectMode();
-            //}
-            //if (BotControls.MineralGrabberFoldButton(this)){
-            //    astroGary.myMineralGrabber.DriveMode();
-            //}
-
-
-            //Glyph Grabber Control
-            //if (!astroGary.myGlyphLifter.GRAB_LOCKED) { //only allow control of grabber if not locked.
-//                indianaGary.myGlyphLifter.GrabberControl(BotControls.GlyphGrabTrigger(this));
-            //}
-
-//            if (rtTogglePressed) {
-//                rtToggleReleased = false;
-//            } else {
-                //Track when toggle button is released
-//                rtToggleReleased = true;
-//            }
-//            rtTogglePressed = BotControls.GlyphGrabLockButton(this);
-//            if (rtToggleReleased) { //only do something if toggle is pressed after being released
-//                if (BotControls.GlyphGrabLockButton(this) && !indianaGary.myGlyphLifter.GRAB_LOCKED){
-//                    indianaGary.myGlyphLifter.Grab();
-//                } else {
-//                    if (BotControls.GlyphGrabLockButton(this) && indianaGary.myGlyphLifter.GRAB_LOCKED) {
-//                        indianaGary.myGlyphLifter.Release();
-//                    }
-//                }
-//          }
-
-
+            if (BotControls.MineralGrabberCollectButton(this)){
+                //astroGary.myMineralGrabber.CollectMode();
+                telemetry.addData("Collect ", "Mode");
+            }
+            if (BotControls.MineralGrabberFoldButton(this)){
+                //astroGary.myMineralGrabber.DriveMode();
+                telemetry.addData("Drive ", "Mode");
+            }
+            if (BotControls.MineralGrabberScoreButton(this)){
+                //astroGary.myMineralGrabber.ScoreMode();
+                telemetry.addData("Score ", "Mode");
+            }
+            telemetry.update();
+            
         }
+
     }
 }

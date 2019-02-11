@@ -84,7 +84,8 @@ public class Auto_R1 extends LinearOpMode {
 
             //DropFromLander
             astroGary.myLanderLatcher.LowerToGround(this);
-            astroGary.drive.Drive2(this, 1,3,10000);
+            astroGary.drive.DriveForward(this, 1);
+            sleep(3000);
             astroGary.drive.StopWheels();
             //LocateSelf();
             //DriveToGold();

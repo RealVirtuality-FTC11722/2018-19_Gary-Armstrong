@@ -166,19 +166,15 @@ public class MecanumDrive {
             Thread.currentThread().interrupt();
         }
     }
-    public void Drive2(LinearOpMode op, double power, double time, double timeout) {
-        ElapsedTime drivetime = new ElapsedTime();
-        drivetime.reset();
+    public void DriveForward(LinearOpMode op, double power) {
         motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (op.opModeIsActive() && drivetime.seconds() < time) {
-            motorBL.setPower(1);
-            motorBR.setPower(1);
-            motorFL.setPower(1);
-            motorFR.setPower(1);
-        }
+        motorBL.setPower(power);
+        motorBR.setPower(power);
+        motorFL.setPower(power);
+        motorFR.setPower(power);
     }
     //Method for autonomous driving forward and backwards
     //distance is specified in inches (positive = drive forward, negative = drive backward)

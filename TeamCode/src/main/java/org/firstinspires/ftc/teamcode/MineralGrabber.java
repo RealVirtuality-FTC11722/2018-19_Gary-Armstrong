@@ -23,7 +23,7 @@ public class MineralGrabber {
     public double SPIN_FORWARD = 0.5;
     public double SPIN_BACKWARD = -0.5;
     public double CRSERVO_STOP = 0.0;
-    public double WRIST_FOLD_POS = 0.40;
+    public double WRIST_FOLD_POS = 0.38;
     public double WRIST_COLLECT_POS = 0.45;
     public double WRIST_SCORE_POS = 0.5;
 
@@ -53,8 +53,10 @@ public class MineralGrabber {
         motorArmLift.setDirection(DcMotor.Direction.REVERSE);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
 
-//        motorArmLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorArmElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArmElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         motorArmSwivel.setPower(0);
         motorArmLift.setPower(0);
@@ -63,59 +65,70 @@ public class MineralGrabber {
 
     public void initServos(HardwareMap myNewHWMap) {
         servoArmWrist = myNewHWMap.get(Servo.class, "servoArmWrist");
-        servoArmSpinner1 = myNewHWMap.get (CRServo.class, "servoArmSpinner");
-        //servoArmSpinner2 = myNewHWMap.get (CRServo.class, "servoArmSpinner2");
+        servoArmSpinner1 = myNewHWMap.get (CRServo.class, "servoArmSpinner1");
+        servoArmSpinner2 = myNewHWMap.get (CRServo.class, "servoArmSpinner2");
 
         servoArmSpinner1.setDirection(CRServo.Direction.FORWARD);
-        //servoArmSpinner2.setDirection(CRServo.Direction.REVERSE);
+        servoArmSpinner2.setDirection(CRServo.Direction.REVERSE);
         servoArmWrist.setDirection(Servo.Direction.FORWARD);
 
         servoArmWrist.setPosition(WRIST_FOLD_POS);
         servoArmSpinner1.setPower(CRSERVO_STOP);
-        //servoArmSpinner2.setPower(CRSERVO_STOP);
+        servoArmSpinner2.setPower(CRSERVO_STOP);
     }
 
-    public void SpinnerControl(boolean fowardBtn, boolean stopBtn, boolean backwardBtn) {
+    public void SpinnerControl(boolean fowardBtn, boolean backwardBtn) {
         if (fowardBtn) {
             servoArmSpinner1.setPower(SPIN_FORWARD);
-            //servoArmSpinner2.setPower(SPIN_FORWARD);
+            servoArmSpinner2.setPower(SPIN_FORWARD);
         }
-
-        if (stopBtn) {
-            servoArmSpinner1.setPower(CRSERVO_STOP);
-            //servoArmSpinner2.setPower(CRSERVO_STOP);
-        }
-
-        if (backwardBtn) {
+        else if (backwardBtn) {
             servoArmSpinner1.setPower(SPIN_BACKWARD);
-            //servoArmSpinner2.setPower(SPIN_BACKWARD);
+            servoArmSpinner2.setPower(SPIN_BACKWARD);
         }
+        else {
+            servoArmSpinner1.setPower(CRSERVO_STOP);
+            servoArmSpinner2.setPower(CRSERVO_STOP);
+        }
+
 
     }
 
     public void ManualArmControl(double swivelStick, double liftStick, double elbowStick, double wristTrigger) {
-//        motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        double LIFT_POWER = 0.3;
+        motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        double LIFT_POWER = 0.5;
         double ELBOW_POWER = 0.35;
         double SWIVEL_POWER = 0.20;
-        int armPos;
-//        armPos = motorArmLift.getCurrentPosition();
-//        if (liftStick < 0){
-//            motorArmLift.setTargetPosition(armPos - 10);
-//        }
-//        else if (liftStick > 0){
-//            motorArmLift.setTargetPosition(armPos + 10);
-//        } else {
-//            motorArmLift.setTargetPosition(armPos);
-//        }
-//        motorArmLift.setPower(LIFT_POWER);
-        motorArmLift.setPower(liftStick*LIFT_POWER);
-        motorArmSwivel.setPower(swivelStick*SWIVEL_POWER);
-        if (elbowStick > 0) {
-            motorArmElbow.setPower(elbowStick * ELBOW_POWER*0.7);
-        } else {
-            motorArmElbow.setPower(elbowStick * ELBOW_POWER);
+        int liftPos;
+        int elbowPos;
+        liftPos = motorArmLift.getCurrentPosition();
+        if (liftStick < 0){
+            motorArmLift.setTargetPosition(liftPos - 15);
         }
+        else if (liftStick > 0){
+            motorArmLift.setTargetPosition(liftPos + 15);
+        } else {
+            motorArmLift.setTargetPosition(liftPos);
+        }
+        motorArmLift.setPower(LIFT_POWER);
+//        motorArmLift.setPower(liftStick*LIFT_POWER);
+        motorArmSwivel.setPower(swivelStick*SWIVEL_POWER);
+        elbowPos = motorArmElbow.getCurrentPosition();
+        if (elbowStick < 0){
+            motorArmElbow.setTargetPosition(elbowPos - 10);
+        }
+        else if (elbowStick > 0){
+            motorArmElbow.setTargetPosition(elbowPos + 10);
+        } else {
+            motorArmElbow.setTargetPosition(elbowPos);
+        }
+
+//        if (elbowStick > 0) {
+//            motorArmElbow.setPower(elbowStick * ELBOW_POWER*0.7);
+//        } else {
+//            motorArmElbow.setPower(elbowStick * ELBOW_POWER);
+//        }
         servoArmWrist.setPosition(WRIST_FOLD_POS + wristTrigger*0.1);
     }
 

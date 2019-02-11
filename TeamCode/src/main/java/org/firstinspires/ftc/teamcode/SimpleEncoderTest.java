@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Simple Wheel Test", group="Training")
+@TeleOp(name="Simple Encoder Test", group="Training")
 //@Disabled
 public class SimpleEncoderTest extends LinearOpMode {
 
@@ -91,6 +91,15 @@ public class SimpleEncoderTest extends LinearOpMode {
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
         motorLanderLatch.setDirection(DcMotor.Direction.FORWARD);
 
+        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArmSwivel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArmLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorArmElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLanderLatch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -100,14 +109,6 @@ public class SimpleEncoderTest extends LinearOpMode {
         motorArmElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLanderLatch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorArmSwivel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorArmLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorArmElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLanderLatch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorFL.setPower(0);
         motorFR.setPower(0);

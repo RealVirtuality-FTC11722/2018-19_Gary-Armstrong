@@ -14,6 +14,7 @@ public class BotConfig {
     //VuMarkDecoder myVuMark = new VuMarkDecoder();
     MineralGrabber myMineralGrabber = new MineralGrabber();
     LanderLatcher myLanderLatcher = new LanderLatcher();
+    Sensors mySensors = new Sensors();
 
     public BotConfig() { // constructor
     }
@@ -24,6 +25,7 @@ public class BotConfig {
             myMineralGrabber.initServos(myNewHWMap);
             myLanderLatcher.initServos(myNewHWMap);
         //Then initialize sensors
+            mySensors.initSensors(myNewHWMap);
            //myVuMark.init(myNewHWMap);
         //Finally initialize motors
             myMineralGrabber.initMotors(myNewHWMap);
@@ -34,7 +36,8 @@ public class BotConfig {
         //Initialize Servos first to minimize movement
             myMineralGrabber.initServos(myNewHWMap);
             myLanderLatcher.initServos(myNewHWMap);
-        //No need to initialize sensors
+        //initialize sensors
+        mySensors.initSensors(myNewHWMap);
         //Then initialize motors
             myMineralGrabber.initMotors(myNewHWMap);
             myLanderLatcher.initMotors(myNewHWMap);
