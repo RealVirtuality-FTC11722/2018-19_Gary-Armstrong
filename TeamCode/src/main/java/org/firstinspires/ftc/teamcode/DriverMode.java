@@ -98,6 +98,12 @@ public class DriverMode extends LinearOpMode {
                 //astroGary.myMineralGrabber.ScoreMode();
                 telemetry.addData("Score ", "Mode");
             }
+            if (astroGary.mySensors.imu.getAngularOrientation().secondAngle > 3) {
+                astroGary.myMineralGrabber.servoArmWrist.setPosition(astroGary.myMineralGrabber.servoArmWrist.getPosition() - 0.002);
+            } else if (astroGary.mySensors.imu.getAngularOrientation().secondAngle < -3) {
+                astroGary.myMineralGrabber.servoArmWrist.setPosition(astroGary.myMineralGrabber.servoArmWrist.getPosition() + 0.002);
+            }
+
             telemetry.update();
 
         }

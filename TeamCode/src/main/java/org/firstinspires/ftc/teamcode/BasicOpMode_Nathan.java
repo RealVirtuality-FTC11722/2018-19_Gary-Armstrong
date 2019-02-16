@@ -101,6 +101,10 @@ public class BasicOpMode_Nathan extends LinearOpMode {
 
             drive = -gamepad1.left_stick_y;
             turn = gamepad1.left_stick_x;
+            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            leftDrive.setPower(leftPower);
+            rightDrive.setPower(rightPower);
 
             //Arm controls
             motorArm.setPower(gamepad2.left_stick_y);
@@ -112,15 +116,6 @@ public class BasicOpMode_Nathan extends LinearOpMode {
                 servoClampL.setPosition(0.5);
                 servoClampR.setPosition(0.5);
             }
-
-
-
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
-
-
 
 
          }
