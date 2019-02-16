@@ -23,7 +23,7 @@ public class MineralGrabber {
     public double SPIN_FORWARD = 0.5;
     public double SPIN_BACKWARD = -0.5;
     public double CRSERVO_STOP = 0.0;
-    public double WRIST_FOLD_POS = 0.38;
+    public double WRIST_FOLD_POS = 0.37;
     public double WRIST_COLLECT_POS = 0.45;
     public double WRIST_SCORE_POS = 0.5;
 
@@ -97,23 +97,27 @@ public class MineralGrabber {
     public void ManualArmControl(double swivelStick, double liftStick, double elbowStick, double wristTrigger) {
         motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        double LIFT_POWER = 0.5;
-        double ELBOW_POWER = 0.35;
+        double LIFT_POWER = 0.55;
+        double ELBOW_POWER = 0.5;
         double SWIVEL_POWER = 0.20;
         int liftPos;
         int elbowPos;
+
         liftPos = motorArmLift.getCurrentPosition();
         if (liftStick < 0){
             motorArmLift.setTargetPosition(liftPos - 15);
         }
         else if (liftStick > 0){
-            motorArmLift.setTargetPosition(liftPos + 15);
+            motorArmLift.setTargetPosition(liftPos + 10);
         } else {
             motorArmLift.setTargetPosition(liftPos);
         }
         motorArmLift.setPower(LIFT_POWER);
 //        motorArmLift.setPower(liftStick*LIFT_POWER);
-        motorArmSwivel.setPower(swivelStick*SWIVEL_POWER);
+        if (swivelStick > 0.2 || swivelStick < 0.2) {
+            motorArmSwivel.setPower(swivelStick * SWIVEL_POWER);
+        }
+
         elbowPos = motorArmElbow.getCurrentPosition();
         if (elbowStick < 0){
             motorArmElbow.setTargetPosition(elbowPos - 10);
@@ -123,6 +127,7 @@ public class MineralGrabber {
         } else {
             motorArmElbow.setTargetPosition(elbowPos);
         }
+        motorArmElbow.setPower(ELBOW_POWER);
 
 //        if (elbowStick > 0) {
 //            motorArmElbow.setPower(elbowStick * ELBOW_POWER*0.7);

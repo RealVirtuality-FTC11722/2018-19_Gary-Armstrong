@@ -25,7 +25,7 @@ public class BotConfig {
             myMineralGrabber.initServos(myNewHWMap);
             myLanderLatcher.initServos(myNewHWMap);
         //Then initialize sensors
-            mySensors.initSensors(myNewHWMap);
+            //mySensors.initSensors(myNewHWMap);
            //myVuMark.init(myNewHWMap);
         //Finally initialize motors
             myMineralGrabber.initMotors(myNewHWMap);
@@ -37,7 +37,7 @@ public class BotConfig {
             myMineralGrabber.initServos(myNewHWMap);
             myLanderLatcher.initServos(myNewHWMap);
         //initialize sensors
-        mySensors.initSensors(myNewHWMap);
+            //mySensors.initSensors(myNewHWMap);
         //Then initialize motors
             myMineralGrabber.initMotors(myNewHWMap);
             myLanderLatcher.initMotors(myNewHWMap);

@@ -139,7 +139,7 @@ public class MecanumDrive {
         double r = Math.hypot(xStick, yStick);
         double robotAngle = Math.atan2(-yStick, xStick) - Math.PI / 4;
         //Set minimum throttle value so the trigger does not need to be pressed to drive
-        double throttle = 2*trigger;
+        double throttle = 0.5 + trigger/2;
         //double throttle = trigger * (1-DRIVE_POWER_MAX_LOW) + DRIVE_POWER_MAX_LOW;
         //Cube the value of turnStick so there's more control over low turn speeds
         double rightX = turnStick; //Math.pow(turnStick, 3);
@@ -148,10 +148,10 @@ public class MecanumDrive {
         final double v3 = r * Math.sin(robotAngle) + rightX;
         final double v4 = r * Math.cos(robotAngle) - rightX;
 
-        motorFL.setPower(v1*throttle/2);
-        motorFR.setPower(v2*throttle/2);
-        motorBL.setPower(v3*throttle/2);
-        motorBR.setPower(v4*throttle/2);
+        motorFL.setPower(v1*throttle);
+        motorFR.setPower(v2*throttle);
+        motorBL.setPower(v3*throttle);
+        motorBR.setPower(v4*throttle);
     }
 
     //Method to stop all power to the wheel motors

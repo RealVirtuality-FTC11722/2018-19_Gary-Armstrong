@@ -56,8 +56,6 @@ public class DriverMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Latch Height: ", astroGary.myLanderLatcher.motorLanderLift.getCurrentPosition());
-            telemetry.update();
 
             //Pass controls to the drive control method.
             astroGary.drive.DriveControl(
@@ -73,7 +71,6 @@ public class DriverMode extends LinearOpMode {
             astroGary.myLanderLatcher.LatchControl(
                     BotControls.LanderLatchHookOnButton(this),
                     BotControls.LanderLatchHookOffButton(this));
-            telemetry.addData("Lifter Height: ", astroGary.myLanderLatcher.motorLanderLift.getCurrentPosition());
 
             //Mineral Grabber Controls
             astroGary.myMineralGrabber.SpinnerControl(
@@ -85,7 +82,10 @@ public class DriverMode extends LinearOpMode {
                     gamepad2.right_stick_y,
                     gamepad2.right_trigger);
             telemetry.addData("Wrist Position: ", astroGary.myMineralGrabber.servoArmWrist.getPosition());
-            telemetry.addData("Arm Pos: ", astroGary.myMineralGrabber.motorArmLift.getCurrentPosition());
+            telemetry.addData("Elbow Pos: ", astroGary.myMineralGrabber.motorArmElbow.getCurrentPosition());
+            telemetry.addData("Lift Arm Pos: ", astroGary.myMineralGrabber.motorArmLift.getCurrentPosition());
+            telemetry.addData("Spin1 Pwr: ", astroGary.myMineralGrabber.servoArmSpinner1.getPower());
+            telemetry.addData("Spin2 Pwr: ", astroGary.myMineralGrabber.servoArmSpinner2.getPower());
             if (BotControls.MineralGrabberCollectButton(this)){
                 //astroGary.myMineralGrabber.CollectMode();
                 telemetry.addData("Collect ", "Mode");
@@ -99,7 +99,7 @@ public class DriverMode extends LinearOpMode {
                 telemetry.addData("Score ", "Mode");
             }
             telemetry.update();
-            
+
         }
 
     }
