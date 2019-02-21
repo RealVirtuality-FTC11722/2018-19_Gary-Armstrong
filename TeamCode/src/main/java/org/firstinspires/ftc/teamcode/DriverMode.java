@@ -88,15 +88,15 @@ public class DriverMode extends LinearOpMode {
             telemetry.addData("Lift2 Arm Pow: ", astroGary.myMineralGrabber.motorArmLift2.getPower());
             telemetry.addData("Spin1 Pwr: ", astroGary.myMineralGrabber.servoArmSpinner1.getPower());
             telemetry.addData("Spin2 Pwr: ", astroGary.myMineralGrabber.servoArmSpinner2.getPower());
-            if (BotControls.MineralGrabberCollectButton(this)){
+            if (BotControls.MineralGrabberCollectButton(this) && astroGary.myMineralGrabber.armMode != MineralGrabber.Mode.COLLECT_MODE){
                 astroGary.myMineralGrabber.CollectMode(this);
                 telemetry.addData("Collect ", "Mode");
             }
-            if (BotControls.MineralGrabberFoldButton(this)){
+            if (BotControls.MineralGrabberFoldButton(this)  && astroGary.myMineralGrabber.armMode != MineralGrabber.Mode.DRIVE_MODE){
                 astroGary.myMineralGrabber.DriveMode(this);
                 telemetry.addData("Drive ", "Mode");
             }
-            if (BotControls.MineralGrabberScoreButton(this)){
+            if (BotControls.MineralGrabberScoreButton(this) && astroGary.myMineralGrabber.armMode != MineralGrabber.Mode.SCORE_MODE){
                 //astroGary.myMineralGrabber.ScoreMode();
                 telemetry.addData("Score ", "Mode");
             }

@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class MineralGrabber {
 //    public DcMotor motorArmSwivel = null;
+    public enum Mode {COLLECT_MODE, DRIVE_MODE, SCORE_MODE}
+    public Mode armMode = Mode.DRIVE_MODE;
     public DcMotor motorArmLift = null;
     public DcMotor motorArmLift2 = null;
     public DcMotor motorArmElbow = null;
@@ -52,8 +54,8 @@ public class MineralGrabber {
         motorArmElbow = myNewHWMap.get(DcMotor.class, "motorArmElbow");
 
     //    motorArmSwivel.setDirection(DcMotor.Direction.FORWARD);
-        motorArmLift.setDirection(DcMotor.Direction.REVERSE);
-        motorArmLift2.setDirection(DcMotor.Direction.REVERSE);
+        motorArmLift.setDirection(DcMotor.Direction.FORWARD);
+        motorArmLift2.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
 
 
@@ -119,12 +121,12 @@ public class MineralGrabber {
         liftPos = motorArmLift.getCurrentPosition();
         liftPos2 = motorArmLift2.getCurrentPosition();
         if (liftStick < 0){
-            motorArmLift.setTargetPosition(liftPos - 15);
-            motorArmLift2.setTargetPosition(liftPos2 - 15);
+            motorArmLift.setTargetPosition(liftPos + 15);
+            motorArmLift2.setTargetPosition(liftPos2 + 15);
         }
         else if (liftStick > 0){
-            motorArmLift.setTargetPosition(liftPos + 10);
-            motorArmLift2.setTargetPosition(liftPos2 + 10);
+            motorArmLift.setTargetPosition(liftPos - 10);
+            motorArmLift2.setTargetPosition(liftPos2 - 10);
         } else {
             motorArmLift.setTargetPosition(liftPos);
             motorArmLift2.setTargetPosition(liftPos2);
@@ -148,6 +150,7 @@ public class MineralGrabber {
 
     //Raise Mineral Grabber to scoring height and stop Spinner
     public void ScoreMode() {
+        armMode = Mode.SCORE_MODE;
         motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmLift.setTargetPosition(ARM_SCORE_POS);
         motorArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -161,17 +164,19 @@ public class MineralGrabber {
 
     //Lower Mineral Grabber to ground and start Spinner
     public void CollectMode(LinearOpMode op) {
+        armMode = Mode.COLLECT_MODE;
         motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //Step 1
-        motorArmLift.setTargetPosition(273);
-        motorArmLift2.setTargetPosition(273);
-        motorArmElbow.setTargetPosition(-59);
+        motorArmLift.setTargetPosition(280);
+        motorArmLift2.setTargetPosition(280);
         motorArmLift.setPower(0.1);
         motorArmLift2.setPower(0.1);
+        op.sleep(2000);
+        motorArmElbow.setTargetPosition(-59);
         motorArmElbow.setPower(0.1);
-        op.sleep(4000);
+        op.sleep(2000);
 
         //Step 2
         motorArmLift.setTargetPosition(539);
@@ -197,6 +202,7 @@ public class MineralGrabber {
 
     //Partially fold up mineral grabber for driving
     public void DriveMode(LinearOpMode op ) {
+        armMode = Mode.DRIVE_MODE;
         motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
