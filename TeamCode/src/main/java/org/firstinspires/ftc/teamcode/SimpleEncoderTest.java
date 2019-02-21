@@ -60,7 +60,7 @@ public class SimpleEncoderTest extends LinearOpMode {
     private DcMotor motorFR = null;
     private DcMotor motorBL = null;
     private DcMotor motorBR = null;
-    private DcMotor motorArmSwivel = null;
+//    private DcMotor motorArmSwivel = null;
     private DcMotor motorArmLift = null;
     private DcMotor motorArmElbow = null;
     private DcMotor motorLanderLatch = null;
@@ -77,7 +77,7 @@ public class SimpleEncoderTest extends LinearOpMode {
         motorFR  = hardwareMap.get(DcMotor.class, "motorFR");
         motorBL  = hardwareMap.get(DcMotor.class, "motorBL");
         motorBR  = hardwareMap.get(DcMotor.class, "motorBR");
-        motorArmSwivel = hardwareMap.get(DcMotor.class, "motorArmSwivel");
+//        motorArmSwivel = hardwareMap.get(DcMotor.class, "motorArmSwivel");
         motorArmLift = hardwareMap.get(DcMotor.class, "motorArmLift");
         motorArmElbow = hardwareMap.get(DcMotor.class, "motorArmElbow");
         motorLanderLatch = hardwareMap.get (DcMotor.class, "motorLanderLatch");
@@ -86,7 +86,7 @@ public class SimpleEncoderTest extends LinearOpMode {
         motorFR.setDirection(DcMotor.Direction.FORWARD);
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorBR.setDirection(DcMotor.Direction.FORWARD);
-        motorArmSwivel.setDirection(DcMotor.Direction.FORWARD);
+//        motorArmSwivel.setDirection(DcMotor.Direction.FORWARD);
         motorArmLift.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
         motorLanderLatch.setDirection(DcMotor.Direction.FORWARD);
@@ -95,7 +95,7 @@ public class SimpleEncoderTest extends LinearOpMode {
         motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorArmSwivel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motorArmSwivel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorArmLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorArmElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLanderLatch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -104,7 +104,7 @@ public class SimpleEncoderTest extends LinearOpMode {
         motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorArmSwivel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        motorArmSwivel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLanderLatch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -114,7 +114,7 @@ public class SimpleEncoderTest extends LinearOpMode {
         motorFR.setPower(0);
         motorBL.setPower(0);
         motorBR.setPower(0);
-        motorArmSwivel.setPower(0);
+//        motorArmSwivel.setPower(0);
         motorArmLift.setPower(0);
         motorArmElbow.setPower(0);
         motorLanderLatch.setPower(0);
@@ -137,7 +137,7 @@ public class SimpleEncoderTest extends LinearOpMode {
             } else {
                 motorLanderLatch.setPower(0);
             }
-            motorArmSwivel.setPower(gamepad1.right_stick_x);
+ //           motorArmSwivel.setPower(gamepad1.right_stick_x);
             motorArmLift.setPower(gamepad1.right_stick_y);
             motorArmElbow.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
 
@@ -146,7 +146,7 @@ public class SimpleEncoderTest extends LinearOpMode {
             telemetry.addData("motorFR Pos: ", motorFR.getCurrentPosition());
             telemetry.addData("motorBL Pos: ", motorBL.getCurrentPosition());
             telemetry.addData("motorBR Pos: ", motorBR.getCurrentPosition());
-            telemetry.addData("motorArmSwvl Pos: ", motorArmSwivel.getCurrentPosition());
+//            telemetry.addData("motorArmSwvl Pos: ", motorArmSwivel.getCurrentPosition());
             telemetry.addData("motorArmElbw Pos: ", motorArmElbow.getCurrentPosition());
             telemetry.addData("motorArmLift Pos: ", motorArmLift.getCurrentPosition());
             telemetry.addData("motorLndLtch Pos: ", motorLanderLatch.getCurrentPosition());
