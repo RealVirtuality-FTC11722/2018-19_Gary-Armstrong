@@ -89,11 +89,11 @@ public class DriverMode extends LinearOpMode {
             telemetry.addData("Spin1 Pwr: ", astroGary.myMineralGrabber.servoArmSpinner1.getPower());
             telemetry.addData("Spin2 Pwr: ", astroGary.myMineralGrabber.servoArmSpinner2.getPower());
             if (BotControls.MineralGrabberCollectButton(this)){
-                //astroGary.myMineralGrabber.CollectMode();
+                astroGary.myMineralGrabber.CollectMode(this);
                 telemetry.addData("Collect ", "Mode");
             }
             if (BotControls.MineralGrabberFoldButton(this)){
-                //astroGary.myMineralGrabber.DriveMode();
+                astroGary.myMineralGrabber.DriveMode(this);
                 telemetry.addData("Drive ", "Mode");
             }
             if (BotControls.MineralGrabberScoreButton(this)){
