@@ -82,7 +82,7 @@ public class Auto_RedGold extends LinearOpMode {
             telemetry.addData("Runtime: ", runtime.seconds());
             telemetry.update();
 
-            //DropFromLander
+            //Drop From Lander
             astroGary.myLanderLatcher.LowerToGround(this);
             astroGary.drive.Drive(this, 1, 5, 10000);
             astroGary.drive.StopWheels();

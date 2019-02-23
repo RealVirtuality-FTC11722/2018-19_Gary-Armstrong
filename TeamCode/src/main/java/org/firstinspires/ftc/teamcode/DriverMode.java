@@ -78,14 +78,13 @@ public class DriverMode extends LinearOpMode {
                     BotControls.SpinnerBackwardButton(this));
             astroGary.myMineralGrabber.ManualArmControl(
                     gamepad2.left_stick_x,
-                    gamepad2.left_stick_y,
-                    gamepad2.right_stick_y,
-                    gamepad2.right_trigger);
+                    BotControls.MineralLiftStick(this),
+                    BotControls.MineralElbowStick(this),
+                    BotControls.MineralWristDown(this),
+                    BotControls.MineralWristUp(this));
             telemetry.addData("Wrist Position: ", astroGary.myMineralGrabber.servoArmWrist.getPosition());
             telemetry.addData("Elbow Pos: ", astroGary.myMineralGrabber.motorArmElbow.getCurrentPosition());
             telemetry.addData("Lift Arm Pos: ", astroGary.myMineralGrabber.motorArmLift.getCurrentPosition());
-            telemetry.addData("Lift1 Arm Pow: ", astroGary.myMineralGrabber.motorArmLift.getPower());
-            telemetry.addData("Lift2 Arm Pow: ", astroGary.myMineralGrabber.motorArmLift2.getPower());
             telemetry.addData("Spin1 Pwr: ", astroGary.myMineralGrabber.servoArmSpinner1.getPower());
             telemetry.addData("Spin2 Pwr: ", astroGary.myMineralGrabber.servoArmSpinner2.getPower());
             if (BotControls.MineralGrabberCollectButton(this) && astroGary.myMineralGrabber.armMode != MineralGrabber.Mode.COLLECT_MODE){
@@ -97,9 +96,11 @@ public class DriverMode extends LinearOpMode {
                 telemetry.addData("Drive ", "Mode");
             }
             if (BotControls.MineralGrabberScoreButton(this) && astroGary.myMineralGrabber.armMode != MineralGrabber.Mode.SCORE_MODE){
-                //astroGary.myMineralGrabber.ScoreMode();
+                astroGary.myMineralGrabber.ScoreMode(this);
                 telemetry.addData("Score ", "Mode");
             }
+            astroGary.myMineralGrabber.servoArmSwivel.setPower(gamepad2.left_stick_x/2);
+            telemetry.addData("Swivel Power: ", astroGary.myMineralGrabber.servoArmSwivel.getPower());
 //            if (astroGary.mySensors.imu.getAngularOrientation().secondAngle > 3) {
 //                astroGary.myMineralGrabber.servoArmWrist.setPosition(astroGary.myMineralGrabber.servoArmWrist.getPosition() - 0.002);
 //            } else if (astroGary.mySensors.imu.getAngularOrientation().secondAngle < -3) {

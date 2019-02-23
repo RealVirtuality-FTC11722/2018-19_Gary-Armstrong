@@ -17,6 +17,7 @@ public class MineralGrabber {
     public Servo servoArmWrist = null;
     public CRServo servoArmSpinner1 = null;
     public CRServo servoArmSpinner2 = null;
+    public CRServo servoArmSwivel = null;
 
     public double SWIVEL_POWER = 0.2;
     public double SWIVEL_LEFT_LIMIT = -1;
@@ -35,7 +36,7 @@ public class MineralGrabber {
     public double ARM_MAX_ANGLE = 90;
     public int ARM_FOLD_POS = 0;
     public int ARM_COLLECT_POS = 600;
-    public int ARM_SCORE_POS = 0;
+    public int ARM_SCORE_POS = 440;
 
     public double FOREARM_LENGTH = 1;
     public double FOREARM_MIN_ANGLE = 0;
@@ -62,7 +63,6 @@ public class MineralGrabber {
         motorArmLift2.setDirection(DcMotor.Direction.FORWARD);
         motorArmElbow.setDirection(DcMotor.Direction.FORWARD);
 
-
         motorArmLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorArmLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -80,14 +80,17 @@ public class MineralGrabber {
         servoArmWrist = myNewHWMap.get(Servo.class, "servoArmWrist");
         servoArmSpinner1 = myNewHWMap.get (CRServo.class, "servoArmSpinner1");
         servoArmSpinner2 = myNewHWMap.get (CRServo.class, "servoArmSpinner2");
+        servoArmSwivel = myNewHWMap.get (CRServo.class, "servoArmSwivel");
 
         servoArmSpinner1.setDirection(CRServo.Direction.FORWARD);
         servoArmSpinner2.setDirection(CRServo.Direction.REVERSE);
         servoArmWrist.setDirection(Servo.Direction.FORWARD);
+        servoArmSwivel.setDirection(CRServo.Direction.FORWARD);
 
         servoArmWrist.setPosition(WRIST_FOLD_POS);
         servoArmSpinner1.setPower(CRSERVO_STOP);
         servoArmSpinner2.setPower(CRSERVO_STOP);
+        servoArmSwivel.setPower(0);
     }
 
     public void SpinnerControl(boolean fowardBtn, boolean backwardBtn) {
@@ -107,7 +110,11 @@ public class MineralGrabber {
 
     }
 
-    public void ManualArmControl(double swivelStick, double liftStick, double elbowStick, double wristTrigger) {
+    public void ManualArmControl(double swivelStick,
+                                 double liftStick,
+                                 double elbowStick,
+                                 double wristDownTrigger,
+                                 double wristUpTrigger) {
         double LIFT_POWER = 1;
         double ELBOW_POWER = 0.5;
         double SWIVEL_POWER = 0.20;
@@ -117,12 +124,12 @@ public class MineralGrabber {
         }
 
 //        if (liftStick < 0){
-//            motorArmLift.setTargetPosition(liftPos + 1);
-//            motorArmLift2.setTargetPosition(liftPos2 + 1);
+//            motorArmLift.setTargetPosition(liftPos + 10);
+//            motorArmLift2.setTargetPosition(liftPos2 + 10);
 //        }
 //        else if (liftStick > 0){
-//            motorArmLift.setTargetPosition(liftPos - 1);
-//            motorArmLift2.setTargetPosition(liftPos2 - 1);
+//            motorArmLift.setTargetPosition(liftPos - 10);
+//            motorArmLift2.setTargetPosition(liftPos2 - 10);
 //        } else {
 //            motorArmLift.setTargetPosition(liftPos);
 //            motorArmLift2.setTargetPosition(liftPos2);
@@ -154,25 +161,73 @@ public class MineralGrabber {
             motorArmElbow.setTargetPosition(elbowPos);
             motorArmElbow.setPower(0.6);
         }
-        if (armMode == Mode.COLLECT_MODE) {
-            servoArmWrist.setPosition(WRIST_COLLECT_POS + wristTrigger * 0.01);
-        } else {
-            servoArmWrist.setPosition(WRIST_FOLD_POS + wristTrigger * 0.1);
+
+        if (wristDownTrigger > 0.2) {
+            servoArmWrist.setPosition(servoArmWrist.getPosition() + 0.01);
         }
+        else if (wristUpTrigger > 0.2) {
+            servoArmWrist.setPosition(servoArmWrist.getPosition() - 0.01);
+        }
+
+        //        if (armMode == Mode.COLLECT_MODE) {
+//            servoArmWrist.setPosition(WRIST_COLLECT_POS + wristTrigger * 0.01);
+//        } else {
+//            servoArmWrist.setPosition(WRIST_FOLD_POS + wristTrigger * 0.1);
+//        }
     }
 
     //Raise Mineral Grabber to scoring height and stop Spinner
-    public void ScoreMode() {
-        armMode = Mode.SCORE_MODE;
+    public void ScoreMode(LinearOpMode op) {
         motorArmLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorArmLift.setTargetPosition(ARM_SCORE_POS);
         motorArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorArmLift2.setTargetPosition(ARM_SCORE_POS);
         motorArmElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorArmElbow.setTargetPosition(FOREARM_SCORE_POS);
-        motorArmLift.setPower(0.02);
-        motorArmElbow.setPower(0.02);
-        servoArmWrist.setPosition(WRIST_SCORE_POS);
+        if (armMode == Mode.COLLECT_MODE){
+            //Step 1
+            motorArmLift.setTargetPosition(ARM_SCORE_POS);
+            motorArmLift2.setTargetPosition(ARM_SCORE_POS);
+            motorArmElbow.setTargetPosition(-88);
+            motorArmLift.setPower(0.1);
+            motorArmLift2.setPower(0.1);
+            motorArmElbow.setPower(0.1);
+            op.sleep(1000);
+
+            //Step 2
+            motorArmElbow.setTargetPosition(-577);
+            motorArmElbow.setPower(0.1);
+            op.sleep(1000);
+
+            servoArmWrist.setPosition(WRIST_SCORE_POS);
+
+        }
+        if (armMode == Mode.DRIVE_MODE){
+            //Step 1
+            motorArmLift.setTargetPosition(177);
+            motorArmLift2.setTargetPosition(177);
+            motorArmLift.setPower(0.1);
+            motorArmLift2.setPower(0.1);
+            op.sleep(1000);
+
+            //Step 2
+            motorArmElbow.setTargetPosition(-401);
+            motorArmElbow.setPower(0.1);
+            op.sleep(1000);
+
+            //Step 3
+            motorArmLift.setTargetPosition(ARM_SCORE_POS);
+            motorArmLift2.setTargetPosition(ARM_SCORE_POS);
+            motorArmElbow.setTargetPosition(-577);
+            motorArmLift.setPower(0.1);
+            motorArmLift2.setPower(0.1);
+            motorArmElbow.setPower(0.1);
+            op.sleep(1000);
+
+            servoArmWrist.setPosition(WRIST_SCORE_POS);
+
+        }
+        elbowPos = -577;
+        liftPos = ARM_SCORE_POS;
+        liftPos2 = ARM_SCORE_POS;
+        armMode = Mode.SCORE_MODE;
     }
 
     //Lower Mineral Grabber to ground and start Spinner
@@ -186,10 +241,10 @@ public class MineralGrabber {
         motorArmLift2.setTargetPosition(280);
         motorArmLift.setPower(0.1);
         motorArmLift2.setPower(0.1);
-        op.sleep(2000);
+        op.sleep(1000);
         motorArmElbow.setTargetPosition(-59);
         motorArmElbow.setPower(0.1);
-        op.sleep(2000);
+        op.sleep(1000);
 
         //Step 2
         motorArmLift.setTargetPosition(539);
@@ -198,7 +253,7 @@ public class MineralGrabber {
         motorArmLift.setPower(0.1);
         motorArmLift2.setPower(0.1);
         motorArmElbow.setPower(0.1);
-        op.sleep(4000);
+        op.sleep(2000);
 
 
         //Step 3
@@ -230,7 +285,7 @@ public class MineralGrabber {
         motorArmLift.setPower(0.1);
         motorArmLift2.setPower(0.1);
         motorArmElbow.setPower(0.1);
-        op.sleep(4000);
+        op.sleep(2000);
 
         //Step 2
         motorArmLift.setTargetPosition(273);
@@ -239,12 +294,12 @@ public class MineralGrabber {
         motorArmLift.setPower(0.1);
         motorArmLift2.setPower(0.1);
         motorArmElbow.setPower(0.1);
-        op.sleep(3000);
+        op.sleep(2000);
 
 
         //Step 3
-        motorArmLift.setTargetPosition(0);
-        motorArmLift2.setTargetPosition(0);
+        motorArmLift.setTargetPosition(50);
+        motorArmLift2.setTargetPosition(50);
         motorArmElbow.setTargetPosition(0);
         motorArmLift.setPower(0.1);
         motorArmLift2.setPower(0.1);
