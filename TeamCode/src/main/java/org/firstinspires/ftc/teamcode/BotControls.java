@@ -34,9 +34,9 @@ public class BotControls {
     public static boolean MineralArmTurnRightButton(LinearOpMode op){return op.gamepad2.dpad_right;}
     public static boolean MineralArmTurnLeftButton(LinearOpMode op) {return op.gamepad2.dpad_left;}
     public static double  MineralArmForwardStick(LinearOpMode op)   {return  op.gamepad2.right_stick_y;}
-    public static boolean MineralGrabberCollectButton(LinearOpMode op) {return op.gamepad2.y;}
-    public static boolean MineralGrabberFoldButton(LinearOpMode op) {return  op.gamepad2.x;}
-    public static boolean MineralGrabberScoreButton(LinearOpMode op) {return  op.gamepad2.a;}
+    public static boolean MineralGrabberCollectButton(LinearOpMode op) {return op.gamepad2.b;}
+    public static boolean MineralGrabberFoldButton(LinearOpMode op) {return  op.gamepad2.a;}
+    public static boolean MineralGrabberScoreButton(LinearOpMode op) {return  op.gamepad2.y;}
     public static double  MineralLiftStick(LinearOpMode op) {return op.gamepad2.left_stick_y;}
     public static double MineralElbowStick(LinearOpMode op) {return op.gamepad2.right_stick_y;}
     public  static double MineralWristDown(LinearOpMode op) {return op.gamepad2.right_trigger;}

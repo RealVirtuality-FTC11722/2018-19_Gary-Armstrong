@@ -54,9 +54,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Autonomous B2", group="Auto")
+@Autonomous(name="Auto - Silver", group="Auto")
 //@Disabled
-public class Auto_B2 extends LinearOpMode {
+public class Auto_Silver extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -71,6 +71,7 @@ public class Auto_B2 extends LinearOpMode {
 
         //Use the Teleop initialization method
         astroGary.InitAuto(hardwareMap);
+        AutoTransitioner.transitionOnStop(this, "Driver Mode - Only");
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -78,13 +79,14 @@ public class Auto_B2 extends LinearOpMode {
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
         runtime.reset();
-        while (opModeIsActive()) {
+        //while (opModeIsActive()) {
             telemetry.addData("Runtime: ", runtime.seconds());
             telemetry.update();
 
-            //DropFromLander
+            //Drop From Lander
             astroGary.myLanderLatcher.LowerToGround(this);
-            //astroGary.drive.Drive(this, 1,10,10000);
+            astroGary.drive.Drive(this, 1, 27, 10000);
+            astroGary.drive.StopWheels();
             //LocateSelf();
             //DriveToGold();
             //LocateSelf();
@@ -92,6 +94,6 @@ public class Auto_B2 extends LinearOpMode {
             //PlaceMarker();
             //LocateSelf();
             //DriveToCrater();
-        }
+        //}
     }
 }
