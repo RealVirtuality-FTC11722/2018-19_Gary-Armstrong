@@ -85,7 +85,11 @@ public class Auto_Silver extends LinearOpMode {
 
             //Drop From Lander
             astroGary.myLanderLatcher.LowerToGround(this);
-            astroGary.drive.Drive(this, 1, 27, 10000);
+            astroGary.drive.Drive(this, 1, 31, 3000);
+            astroGary.drive.StopWheels();
+            astroGary.drive.motorFR.setPower(0.5);
+            astroGary.drive.motorBL.setPower(-0.5);
+            sleep(400);
             astroGary.drive.StopWheels();
             //LocateSelf();
             //DriveToGold();

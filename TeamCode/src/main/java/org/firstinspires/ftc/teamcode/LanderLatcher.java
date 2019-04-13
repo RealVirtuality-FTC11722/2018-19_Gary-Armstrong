@@ -40,7 +40,7 @@ public class LanderLatcher {
     public void LowerToGround(LinearOpMode op) {
  //        while (op.opModeIsActive() && servoLanderHook.getPosition() == LATCHED){
                 motorLanderLift.setPower(1.0);
-                op.sleep(17000);
+                op.sleep(16500);
                 servoLanderHook.setPosition(UNLATCHED);
                 motorLanderLift.setPower(0);
  //       }

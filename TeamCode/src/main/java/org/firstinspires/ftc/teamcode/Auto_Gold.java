@@ -85,10 +85,10 @@ public class Auto_Gold extends LinearOpMode {
 
             //Drop From Lander
             astroGary.myLanderLatcher.LowerToGround(this);
-            astroGary.drive.Drive(this, 1, 30, 10000);
+            astroGary.drive.Drive(this, 1, 45, 10000);
             astroGary.drive.StopWheels();
             astroGary.myMineralGrabber.DropTeamMarker(this);
-            //LocateSelf();
+             //LocateSelf();
             //DriveToGold();
             //LocateSelf();
             //DriveToCorner();

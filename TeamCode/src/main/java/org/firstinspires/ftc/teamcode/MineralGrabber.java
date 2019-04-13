@@ -121,20 +121,20 @@ public class MineralGrabber {
         boolean holdLift = false;
         boolean holdElbow = false;
 
-        if (swivelStick > 0.7) {
-            servoArmSwivel.setPower(servoArmSwivel.getPower() + 0.05);
-        }
-        if (swivelStick < -0.7) {
+        if (swivelStick > 0.9) {
             servoArmSwivel.setPower(servoArmSwivel.getPower() - 0.05);
         }
-        if (liftStick < -0.1) {
+        if (swivelStick < -0.9) {
+            servoArmSwivel.setPower(servoArmSwivel.getPower() + 0.05);
+        }
+        if (liftStick > 0.1) {
             holdLift = false;
             motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motorArmLift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motorArmLift.setPower(-0.1);
             motorArmLift2.setPower(-0.1);
         }
-        else if (liftStick > 0.1) {
+        else if (liftStick < -0.1) {
                 holdLift = false;
                 motorArmLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 motorArmLift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -207,7 +207,7 @@ public class MineralGrabber {
             motorArmElbow.setPower(0.15);
             op.sleep(2000);
 
-            servoArmWrist.setPosition(WRIST_SCORE_POS);
+            //servoArmWrist.setPosition(WRIST_SCORE_POS);
 
         }
         if (armMode == Mode.DRIVE_MODE){
@@ -224,7 +224,7 @@ public class MineralGrabber {
             op.sleep(3000);
 
             //Step 3
-            servoArmWrist.setPosition(WRIST_SCORE_POS);
+            //servoArmWrist.setPosition(WRIST_SCORE_POS);
             motorArmElbow.setTargetPosition(-577);
             motorArmElbow.setPower(0.05);
             op.sleep(2000);
@@ -352,7 +352,7 @@ public class MineralGrabber {
         op.sleep(1000);
         servoArmSpinner1.setPower(SPIN_FORWARD);
         servoArmSpinner2.setPower(SPIN_FORWARD);
-        op.sleep(2000);
+        op.sleep(1500);
         servoArmSpinner1.setPower(CRSERVO_STOP);
         servoArmSpinner2.setPower(CRSERVO_STOP);
 //        DriveMode();
